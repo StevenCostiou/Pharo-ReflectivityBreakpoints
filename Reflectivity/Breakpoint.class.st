@@ -33,9 +33,7 @@ Class {
 { #category : #all }
 Breakpoint class >> addBreakpoint: aBreakpoint [
 	self all add: aBreakpoint.
-	self observers
-		do:
-			[ :observer | observer ifNotNil: [ observer update: aBreakpoint ] ]
+	self notifyBreakpointAdded: aBreakpoint
 ]
 
 { #category : #all }
@@ -108,6 +106,26 @@ Breakpoint class >> isInstalledIn: aMethod [
 ]
 
 { #category : #observers }
+Breakpoint class >> notifyBreakpointAdded: aBreakpoint [
+	| notification |
+	notification := BreakpointAddedNotification
+		on: aBreakpoint
+		nodes: aBreakpoint link nodes.
+	self observers
+		do: [ :observer | observer ifNotNil: [ observer update: notification ] ]
+]
+
+{ #category : #observers }
+Breakpoint class >> notifyBreakpointRemoved: aBreakpoint fromNodes: nodes [
+	| notification |
+	notification := BreakpointRemovedNotification
+		on: aBreakpoint
+		nodes: nodes.
+	self observers
+		do: [ :observer | observer ifNotNil: [ observer update: notification ] ]
+]
+
+{ #category : #observers }
 Breakpoint class >> observers [
 	^Observers ifNil:[Observers := WeakOrderedCollection new]
 ]
@@ -135,10 +153,10 @@ Breakpoint class >> removeAll [
 
 { #category : #all }
 Breakpoint class >> removeBreakpoint: aBreakpoint [
+	| nodes |
+	nodes := aBreakpoint link nodes copy.
 	self all remove: aBreakpoint.
-	self observers
-		do:
-			[ :observer | observer ifNotNil: [ observer update: aBreakpoint ] ]
+	self notifyBreakpointRemoved: aBreakpoint fromNodes: nodes
 ]
 
 { #category : #cleanup }
