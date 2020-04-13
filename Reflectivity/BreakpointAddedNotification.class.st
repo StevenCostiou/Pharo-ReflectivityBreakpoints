@@ -6,8 +6,3 @@ Class {
 	#superclass : #BreakpointNotification,
 	#category : #'Reflectivity-Breakpoints'
 }
-
-{ #category : #visiting }
-BreakpointAddedNotification >> acceptVisitor: v [
-	v breakpointAdded: breakpoint
-]
