@@ -39,7 +39,8 @@ FieldWatchpoint >> accessStrategy: anObject [
 { #category : #initialize }
 FieldWatchpoint >> initialize [
 	super initialize.
-	accessStrategy := #all
+	accessStrategy := #all.
+	targetVariableNames := OrderedCollection new
 ]
 
 { #category : #install }
