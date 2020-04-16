@@ -18,7 +18,7 @@ FieldWatchpointMockSubclass >> initialize [
 
 { #category : #accessing }
 FieldWatchpointMockSubclass >> instVarReads [
-	^self v1 + v2
+	^v1 + v2
 ]
 
 { #category : #accessing }
