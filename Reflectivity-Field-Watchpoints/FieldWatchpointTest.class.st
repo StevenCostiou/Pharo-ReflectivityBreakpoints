@@ -68,3 +68,23 @@ FieldWatchpointTest >> testIsWatchpoint [
 	self assert: FieldWatchpoint new isWatchpoint.
 	self deny: Breakpoint new isWatchpoint
 ]
+
+{ #category : #tests }
+FieldWatchpointTest >> testWatchVariableIn [ 	
+
+	wp := FieldWatchpoint watchVariable: #v1 in: FieldWatchpointMockClass.
+	
+	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1).
+	self assert: wp targetClass identicalTo: FieldWatchpointMockClass.
+	self assert: wp targetInstance equals: nil.
+	
+	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp).	
+	self assertCollection: wp link nodes equals: self nodesForV1InFieldWatchpointMockClass asSet.
+	
+	self should: [FieldWatchpointMockClass new] raise: Break.
+	self should: [obj1 v1] raise: Break.	
+	self should: [obj1 v1: 0] raise: Break.
+	self should: [ FieldWatchpointMockSubclass new ] raise: Break.
+	
+	
+]

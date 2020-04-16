@@ -19,7 +19,7 @@ FieldWatchpoint class >> watch: aClass [
 ]
 
 { #category : #API }
-FieldWatchpoint class >> watch: aVariableName in: aClass [
+FieldWatchpoint class >> watchVariable: aVariableName in: aClass [
 	^ self new
 		targetClass: aClass;
 		targetVariableNames: (OrderedCollection with: aVariableName);
