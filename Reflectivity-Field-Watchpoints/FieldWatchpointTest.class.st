@@ -49,17 +49,18 @@ FieldWatchpointTest >> setUp [
 
 { #category : #running }
 FieldWatchpointTest >> tearDown [
-
-	wp ifNotNil:[wp remove].
-	super tearDown.
+	wp
+		ifNotNil: [ wp isInstalled
+				ifTrue: [ wp remove ] ].
+	super tearDown
 ]
 
 { #category : #tests }
 FieldWatchpointTest >> testInitialize [ 	
-	|wp|
 	wp := FieldWatchpoint new.
 	self assert: wp accessStrategy equals: #all.
-	self assertEmpty: wp targetVariableNames
+	self assertEmpty: wp targetVariableNames.
+	self deny: wp isInstalled
 ]
 
 { #category : #tests }

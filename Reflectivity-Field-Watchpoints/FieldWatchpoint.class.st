@@ -40,7 +40,8 @@ FieldWatchpoint >> accessStrategy: anObject [
 FieldWatchpoint >> initialize [
 	super initialize.
 	accessStrategy := #all.
-	targetVariableNames := OrderedCollection new
+	targetVariableNames := OrderedCollection new.
+	isInstalled := false
 ]
 
 { #category : #install }
@@ -69,9 +70,9 @@ FieldWatchpoint >> isWatchpoint [
 
 { #category : #install }
 FieldWatchpoint >> remove [
+	super remove.
 	targetInstance := nil.
-	isInstalled := false.
-	super remove
+	isInstalled := false
 ]
 
 { #category : #accessing }
