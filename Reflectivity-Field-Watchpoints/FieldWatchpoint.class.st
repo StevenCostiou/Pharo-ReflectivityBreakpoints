@@ -62,6 +62,11 @@ FieldWatchpoint >> isInstalled [
 	^isInstalled
 ]
 
+{ #category : #testing }
+FieldWatchpoint >> isWatchpoint [
+	^true
+]
+
 { #category : #install }
 FieldWatchpoint >> remove [
 	targetInstance := nil.

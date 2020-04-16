@@ -61,3 +61,9 @@ FieldWatchpointTest >> testInitialize [
 	self assert: wp accessStrategy equals: #all.
 	self assertEmpty: wp targetVariableNames
 ]
+
+{ #category : #tests }
+FieldWatchpointTest >> testIsWatchpoint [
+	self assert: FieldWatchpoint new isWatchpoint.
+	self deny: Breakpoint new isWatchpoint
+]
