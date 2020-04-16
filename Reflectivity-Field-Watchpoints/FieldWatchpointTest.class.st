@@ -53,3 +53,11 @@ FieldWatchpointTest >> tearDown [
 	wp ifNotNil:[wp remove].
 	super tearDown.
 ]
+
+{ #category : #tests }
+FieldWatchpointTest >> testInitialize [ 	
+	|wp|
+	wp := FieldWatchpoint new.
+	self assert: wp accessStrategy equals: #all.
+	self assertEmpty: wp targetVariableNames
+]
