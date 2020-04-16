@@ -39,3 +39,17 @@ FieldWatchpointTest >> nodesForV2InFieldWatchpointMockSubclass [
 	nodes add: (FieldWatchpointMockClass>>#v2:) ast statements first.
 	^nodes
 ]
+
+{ #category : #running }
+FieldWatchpointTest >> setUp [
+	"Hooks that subclasses may override to define the fixture of test."
+	obj1 := FieldWatchpointMockClass new.
+	obj2 := FieldWatchpointMockSubclass new
+]
+
+{ #category : #running }
+FieldWatchpointTest >> tearDown [
+
+	wp ifNotNil:[wp remove].
+	super tearDown.
+]
