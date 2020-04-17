@@ -15,7 +15,8 @@ Class {
 }
 
 { #category : #API }
-FieldWatchpoint class >> watch: aClass [
+FieldWatchpoint class >> allSlotNamesFor: aClass [
+	^ aClass allSlots collect: [ :s | s name ]
 ]
 
 { #category : #API }
@@ -23,6 +24,50 @@ FieldWatchpoint class >> watchVariable: aVariableName in: aClass [
 	^ self new
 		targetClass: aClass;
 		targetVariableNames: (OrderedCollection with: aVariableName);
+		install
+]
+
+{ #category : #API }
+FieldWatchpoint class >> watchVariableReads: aVariableName in: aClass [
+	^ self new
+		targetClass: aClass;
+		accessStrategy: #read;
+		targetVariableNames: (OrderedCollection with: aVariableName);
+		install
+]
+
+{ #category : #API }
+FieldWatchpoint class >> watchVariableWrites: aVariableName in: aClass [
+	^ self new
+		targetClass: aClass;
+		accessStrategy: #write;
+		targetVariableNames: (OrderedCollection with: aVariableName);
+		install
+]
+
+{ #category : #API }
+FieldWatchpoint class >> watchVariablesIn: aClass [
+	^ self new
+		targetClass: aClass;
+		targetVariableNames: (self allSlotNamesFor: aClass);
+		install
+]
+
+{ #category : #API }
+FieldWatchpoint class >> watchVariablesReadsIn: aClass [
+	^ self new
+		targetClass: aClass;
+		accessStrategy: #read;
+		targetVariableNames: (self allSlotNamesFor: aClass);
+		install
+]
+
+{ #category : #API }
+FieldWatchpoint class >> watchVariablesWritesIn: aClass [
+	^ self new
+		targetClass: aClass;
+		accessStrategy: #write;
+		targetVariableNames: (self allSlotNamesFor: aClass);
 		install
 ]
 
