@@ -199,24 +199,12 @@ ReflectivityExamples >> initialize [
 	self compileTemporaryMethods
 ]
 
-{ #category : #'as yet unclassified' }
-ReflectivityExamples >> methodToBeModified [ ^nil
-]
-
-{ #category : #'as yet unclassified' }
-ReflectivityExamples >> methodToBeRemoved [ ^nil
-]
-
 { #category : #initialization }
 ReflectivityExamples >> removeTemporaryMethods [
 	
 	self class removeSelector: #methodToBeRemoved.
 	self class removeSelector: #methodToBeModified.
 	self class removeSelector: #stubMethod
-]
-
-{ #category : #'as yet unclassified' }
-ReflectivityExamples >> stubMethod [ ^nil
 ]
 
 { #category : #tagging }
