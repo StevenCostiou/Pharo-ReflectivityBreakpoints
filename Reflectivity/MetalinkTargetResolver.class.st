@@ -107,10 +107,13 @@ MetalinkTargetResolver class >> resolveASTLookupFor: varOrSlot option: option [
 { #category : #'resolving - private' }
 MetalinkTargetResolver class >> resolvingBlocForOption: option [
 	option = #write
-		ifTrue: [ ^ [ :varOrSlot | varOrSlot assignmentNodes asIdentitySet  ] ].
+		ifTrue: [ ^ [ :varOrSlot | self assignmentNodesFor: varOrSlot ] ].
 	option = #read
-		ifTrue: [ ^ [ :varOrSlot | varOrSlot readNodes asIdentitySet] ].
-	^ [ :varOrSlot | (OrderedCollection with: varOrSlot assignmentNodes with: varOrSlot readNodes) flattened asIdentitySet ]
+		ifTrue: [ ^ [ :varOrSlot | self readNodesFor: varOrSlot ] ].
+	^ [ :varOrSlot | 
+	(OrderedCollection
+		with: (self assignmentNodesFor: varOrSlot)
+		with: (self readNodesFor: varOrSlot)) flattened asIdentitySet ]
 ]
 
 { #category : #api }
