@@ -117,7 +117,7 @@ MetaLinkTargetResolverTest >> testUsingNodesForVariablesIn [
 	resolvedNodes := MetalinkTargetResolver
 		usingNodesForVariable: slot
 		in:
-			{ReflectivityExamples2Subclass.
+			{ReflectivityExamples2Subclass. 
 			ReflectivityExamples2}.
 
 	"First we test that each collected node is a variable node with a binding to our slot"

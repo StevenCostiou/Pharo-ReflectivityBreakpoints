@@ -120,3 +120,9 @@ MetalinkTargetResolver class >> temporaryNamed: aTempVarName inMethod: aMethodNa
 	temp := self lookupTemporaryNamed: aTempVarName asSymbol inMethod: aMethodName for: aClassOrObject.
 	^ self resolveASTLookupFor: temp option: option
 ]
+
+{ #category : #'resolving - private' }
+MetalinkTargetResolver class >> usingNodesForVariable: aVarOrSlot in: classes [
+	^ (classes flatCollect: [ :c | c variableNodes ])
+		select: [ :each | each binding variable == aVarOrSlot ]
+]
