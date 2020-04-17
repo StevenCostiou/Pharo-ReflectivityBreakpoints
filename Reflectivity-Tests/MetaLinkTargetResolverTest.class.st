@@ -8,6 +8,24 @@ Class {
 }
 
 { #category : #tests }
+MetaLinkTargetResolverTest >> testFindAssignmentSlotNodes [
+	| slot astNodes resolvedNodes |
+	slot := ReflectivityExamples2 slotNamed: 'instVar'.
+
+	"We get all variable assignment nodes refering to the slot in the RFExample2 class hierarchy"
+	astNodes := (ReflectivityExamples2 withAllSubclasses
+		flatCollect: [ :c | c variableNodes ])
+		select: [ :each | each binding variable == slot and: [ each isWrite ] ]
+		thenCollect: [ :each | each parent ].
+
+	"We use the target resolver to find all assignment nodes for our slot"
+	resolvedNodes := MetalinkTargetResolver assignmentNodesFor: slot.
+	self
+		assert: resolvedNodes asIdentitySet
+		equals: astNodes asIdentitySet
+]
+
+{ #category : #tests }
 MetaLinkTargetResolverTest >> testFindClassVariable [
 	| classVar |
 	classVar := ReflectivityExamples classVariableNamed: 'singleton'.
@@ -34,6 +52,23 @@ MetaLinkTargetResolverTest >> testFindMethod [
 	ast := (ReflectivityExamples >> #exampleMethod) ast.
 	self assert: (MetalinkTargetResolver methodNamed: #exampleMethod for: ReflectivityExamples) identicalTo: ast.
 	self assert: (MetalinkTargetResolver methodNamed: #exampleMethod for: ReflectivityExamples new) identicalTo: ast
+]
+
+{ #category : #tests }
+MetaLinkTargetResolverTest >> testFindReadSlotNodes [
+	| slot astNodes resolvedNodes |
+	slot := ReflectivityExamples2 slotNamed: 'instVar'.
+
+	"We get all variable read nodes refering to the slot in the RFExample2 class hierarchy"
+	astNodes := (ReflectivityExamples2 withAllSubclasses
+		flatCollect: [ :c | c variableNodes ])
+		select: [ :each | each binding variable == slot and: [ each isRead ] ].
+
+	"We use the target resolver to find all read nodes for our slot"
+	resolvedNodes := MetalinkTargetResolver readNodesFor: slot.
+	self
+		assert: resolvedNodes asIdentitySet
+		equals: astNodes asIdentitySet
 ]
 
 { #category : #tests }

@@ -21,6 +21,18 @@ Class {
 	#category : #'Reflectivity-Installer'
 }
 
+{ #category : #'resolving - private' }
+MetalinkTargetResolver class >> assignmentNodesFor: aVarOrSlot [
+	(aVarOrSlot isKindOf: Slot)
+		ifFalse: [ self flag: 'better solution than "is kind of" must be found'.
+			^ aVarOrSlot assignmentNodes asIdentitySet ].
+	^ ((self
+		usingNodesForVariable: aVarOrSlot
+		in: aVarOrSlot owningClass withAllSubclasses)
+		select: [ :each | each isWrite ]
+		thenCollect: [ :each | each parent ]) asIdentitySet
+]
+
 { #category : #resolving }
 MetalinkTargetResolver class >> classFor: aClassOrObject [
 	| class |
@@ -74,6 +86,17 @@ MetalinkTargetResolver class >> lookupTemporaryNamed: aTempVarName inMethod: aMe
 { #category : #api }
 MetalinkTargetResolver class >> methodNamed: aMethodName for: aClassOrObject [
 	^ self lookupASTForMethodNamed: aMethodName asSymbol in: aClassOrObject
+]
+
+{ #category : #'resolving - private' }
+MetalinkTargetResolver class >> readNodesFor: aVarOrSlot [
+	(aVarOrSlot isKindOf: Slot)
+		ifFalse: [ self flag: 'better solution than "is kind of" must be found'.
+			^ aVarOrSlot readNodes asIdentitySet ].
+	^ ((self
+		usingNodesForVariable: aVarOrSlot
+		in: aVarOrSlot owningClass withAllSubclasses)
+		select: [ :each | each isRead ]) asIdentitySet
 ]
 
 { #category : #resolving }
