@@ -10,6 +10,14 @@ Class {
 }
 
 { #category : #helpers }
+FieldWatchpointTest >> allNodesForV1 [
+	^ OrderedCollection new
+		addAll: self nodesForV1InFieldWatchpointMockClass;
+		addAll: self nodesForV1InFieldWatchpointMockSubclass;
+		yourself
+]
+
+{ #category : #helpers }
 FieldWatchpointTest >> nodesForV1InFieldWatchpointMockClass [
 	|nodes |
 	nodes := OrderedCollection new.
@@ -79,7 +87,7 @@ FieldWatchpointTest >> testWatchVariableIn [
 	self assert: wp targetInstance equals: nil.
 	
 	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp).	
-	self assertCollection: wp link nodes equals: self nodesForV1InFieldWatchpointMockClass asSet.
+	self assertCollection: wp link nodes asIdentitySet equals: self allNodesForV1 asIdentitySet.
 	
 	self should: [FieldWatchpointMockClass new] raise: Break.
 	self should: [obj1 v1] raise: Break.	
