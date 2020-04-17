@@ -932,6 +932,7 @@ LinkInstallerTest >> testUnregisterPermaLinksFor [
 		
 	link uninstall.
 	self assertEmpty: linkRegistry permanentTargets.
+	self assertEmpty: (linkRegistry classes at: ReflectivityExamples2).
 	self assertEmpty: link nodes.
 	self assertEmpty: (linkRegistry permaLinksFor:link) 
 	

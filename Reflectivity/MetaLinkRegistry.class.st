@@ -131,10 +131,18 @@ MetaLinkRegistry >> removePermaLinkFromPermanentTarget: permaLink [
 ]
 
 { #category : #permalinks }
+MetaLinkRegistry >> removePermalinkSlotOrVarFromClassRegistry: permaLink [
+	(classes at: permaLink slotOrVarClass)
+		remove: permaLink slotOrVariable
+]
+
+{ #category : #permalinks }
 MetaLinkRegistry >> unregisterPermaLinksFor: aLink [
 	| permaLinks |
 	permaLinks := (self permaLinksFor: aLink) ifEmpty: [ ^ self ].
 	permaLinks
-		do: [ :permaLink | self removePermaLinkFromPermanentTarget: permaLink ].
+		do: [ :permaLink | 
+			self removePermaLinkFromPermanentTarget: permaLink.
+			self removePermalinkSlotOrVarFromClassRegistry: permaLink ].
 	permalinks removeKey: aLink
 ]
