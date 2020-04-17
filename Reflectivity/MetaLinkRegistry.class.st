@@ -122,9 +122,19 @@ MetaLinkRegistry >> registerPermaLink: aPermaLink [
 ]
 
 { #category : #permalinks }
+MetaLinkRegistry >> removePermaLinkFromPermanentTarget: permaLink [
+	| targetForPermaLink |
+	targetForPermaLink := permanentTargets at: permaLink slotOrVariable.
+	targetForPermaLink remove: permaLink.
+	targetForPermaLink isEmpty
+		ifTrue: [ permanentTargets removeKey: permaLink slotOrVariable ]
+]
+
+{ #category : #permalinks }
 MetaLinkRegistry >> unregisterPermaLinksFor: aLink [
 	| permaLinks |
 	permaLinks := (self permaLinksFor: aLink) ifEmpty: [ ^ self ].
-	permaLinks do: [ :permaLink | (permanentTargets at: permaLink slotOrVariable) remove: permaLink ].
+	permaLinks
+		do: [ :permaLink | self removePermaLinkFromPermanentTarget: permaLink ].
 	permalinks removeKey: aLink
 ]

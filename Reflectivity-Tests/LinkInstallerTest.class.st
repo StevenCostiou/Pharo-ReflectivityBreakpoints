@@ -917,3 +917,23 @@ LinkInstallerTest >> testUninstallOneMetaLinkManyObjects [
 	obj4 exampleMethod.
 	self assert: counter equals: 1.
 ]
+
+{ #category : #permalinks }
+LinkInstallerTest >> testUnregisterPermaLinksFor [
+	| link linkRegistry |
+	link := MetaLink new.
+	linkRegistry := link linkInstaller linksRegistry.
+	
+	link installOnSlotNamed: #instVar
+		for: ReflectivityExamples2
+		option: #all
+		instanceSpecific: false.
+		
+		
+	link uninstall.
+	self assertEmpty: linkRegistry permanentTargets.
+	self assertEmpty: link nodes.
+	self assertEmpty: (linkRegistry permaLinksFor:link) 
+	
+	
+]
