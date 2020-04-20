@@ -25,12 +25,13 @@ Breakpoint all first node methodNode. "gets the method node in which the breakpo
 ## Field Watchpoint
 
 ```Smalltalk
-watchVariableWrites: aVariableName in: aClass 
-watchVariable: aVariableName in: aClass 
-watchVariablesWritesIn: aClass 
-watchVariablesIn: aClass 
-watchVariablesReadsIn: aClass 
-watchVariableReads: aVariableName in: aClass 
-allSlotNamesFor: aClass 
+FieldWatchpoint>>watchVariablesIn: aClass 
+FieldWatchpoint>>watchVariablesWritesIn: aClass 
+FieldWatchpoint>>watchVariablesReadsIn: aClass 
+```
 
+```Smalltalk
+FieldWatchpoint>>watchVariable: aVariableName in: aClass 
+FieldWatchpoint>>watchVariableWrites: aVariableName in: aClass 
+FieldWatchpoint>>watchVariableReads: aVariableName in: aClass 
 ```
