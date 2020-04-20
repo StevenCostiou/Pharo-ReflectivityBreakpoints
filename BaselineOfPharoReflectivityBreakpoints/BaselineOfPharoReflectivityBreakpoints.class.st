@@ -15,7 +15,7 @@ BaselineOfPharoReflectivityBreakpoints >> baseline: spec [
 				package: 'Reflectivity';
 				package: 'Reflectivity-Tests' with: [ spec requires: #('Reflectivity') ];
 				package: 'Reflectivity-Tools-Tests' with: [ spec requires: #('Reflectivity-Tests') ];
-				package: 'Reflectivity-Field-Watchpoints' with: [ spec requires: #('Reflectivity-Tools-Tests') ].
+				package: 'Reflectivity-Field-Watchpoints' with: [ spec requires: #('Reflectivity') ].
 			"Groups"
 			spec
 				group: 'Core' with: #('Reflectivity' 'Reflectivity-Tests' 'Reflectivity-Tools-Tests' 'Reflectivity-Field-Watchpoints') ].
