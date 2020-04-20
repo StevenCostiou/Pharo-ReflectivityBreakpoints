@@ -33,7 +33,7 @@ Breakpoints and field watchpoints responds to the `isWatchpoint` interface, whic
 
 ### Breaking on any instance variable access
 
-Through the following API, you can configure a field watchpoint to break if any instance variable of instances of a class `aClass` is accessed (read, write, or both).
+Through the following API, you can configure a field watchpoint to break if any instance variable of any instance of a class `aClass` is accessed (read, write, or both).
 
 ```Smalltalk
 FieldWatchpoint>>watchVariablesIn: aClass 
@@ -43,7 +43,7 @@ FieldWatchpoint>>watchVariablesReadsIn: aClass
 
 ### Breaking on a specific instance variable access
 
-Through the following API, you can configure a field watchpoint to break if a specific instance variable named `aVariableName` of instances of a class `aClass` is accessed (read, write, or both).
+Through the following API, you can configure a field watchpoint to break if a specific instance variable named `aVariableName` of any instance of a class `aClass` is accessed (read, write, or both).
 
 ```Smalltalk
 FieldWatchpoint>>watchVariable: aVariableName in: aClass 
