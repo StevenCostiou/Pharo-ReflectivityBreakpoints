@@ -1,5 +1,8 @@
 # Pharo-ReflectivityBreakpoints
-Improving Reflectivity breakpoints 
+Improving Reflectivity breakpoints with:
+- a simple observer infrastructure to allow tools to monitor when breakpoints are added/removed
+- a field watchpoint implementation
+- an object-centric field watchpoint implementation
 
 ## Breakpoint Observer
 
