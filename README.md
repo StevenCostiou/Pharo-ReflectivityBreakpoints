@@ -22,3 +22,15 @@ To know where a breakpoint is installed (for example here with the first one):
 Breakpoint all first node. "gets the AST node on which the breakpoint is installed"
 Breakpoint all first node methodNode. "gets the method node in which the breakpoint is installed"
 ```
+## Field Watchpoint
+
+```Smalltalk
+watchVariableWrites: aVariableName in: aClass 
+watchVariable: aVariableName in: aClass 
+watchVariablesWritesIn: aClass 
+watchVariablesIn: aClass 
+watchVariablesReadsIn: aClass 
+watchVariableReads: aVariableName in: aClass 
+allSlotNamesFor: aClass 
+
+```
