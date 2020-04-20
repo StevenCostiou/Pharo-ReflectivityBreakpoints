@@ -30,6 +30,11 @@ It is implemented as a subclass of `BreakPoint`, therefore installation of field
 
 Breakpoints and field watchpoints responds to the `isWatchpoint` interface, which returns `true` for instances of `FieldWatchpoint` and `false` otherwise.
 
+A field watchpoint installed on a specific instance variable of a class will install a breakpoint on all accesses to that instance variable, in the whole class hierarchy.
+For example, imagine that you have a class `A` that defines a variable `x`, and a subclass `B` extending `A`.
+Now, the point is you are debugging `B`, so you click on B and request the installation of a field watchpoint on `x`.
+The watchpoint will install a breakpoint in all methods from `B` that use `x`, and all methods from `A` that use `x`, because instances of `B` may call methods using `x` that are defined in `A`.
+
 
 ### Breaking on any instance variable access
 
