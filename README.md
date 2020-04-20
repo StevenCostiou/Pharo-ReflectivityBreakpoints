@@ -24,6 +24,13 @@ Breakpoint all first node methodNode. "gets the method node in which the breakpo
 ```
 ## Field Watchpoint
 
+A `FieldWatchpoint` is a breakpoint that halts the execution when a field of an object is accessed.
+
+It is implemented as a subclass of `BreakPoint`, therefore installation of field watchpoints is notified as a breakpoint change through the observer mechanics described above.
+
+Breakpoints and field watchpoints responds to the `isWatchpoint` interface, which returns `true` for instances of `FieldWatchpoint` and `false` otherwise.
+
+
 ```Smalltalk
 FieldWatchpoint>>watchVariablesIn: aClass 
 FieldWatchpoint>>watchVariablesWritesIn: aClass 
