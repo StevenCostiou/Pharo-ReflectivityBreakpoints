@@ -5,7 +5,8 @@ Class {
 		'obj1',
 		'obj2',
 		'wp',
-		'obj3'
+		'obj3',
+		'obj4'
 	],
 	#category : #'Reflectivity-Field-Watchpoints'
 }
@@ -69,7 +70,8 @@ FieldWatchpointTest >> setUp [
 	"Hooks that subclasses may override to define the fixture of test."
 	obj1 := FieldWatchpointMockClass new.
 	obj2 := FieldWatchpointMockSubclass new.
-	obj3 := FieldWatchpointMockClass new
+	obj3 := FieldWatchpointMockClass new.
+	obj4 := FieldWatchpointMockSubclass new
 ]
 
 { #category : #running }
@@ -185,6 +187,7 @@ FieldWatchpointTest >> testWatchVariableInObject [
 	
 	self should: [obj1 v1] raise: Break.	
 	self should: [obj1 v1: 0] raise: Break.	
+		
 	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
 	self shouldnt: [obj3 v1] raise: Break.
 	self shouldnt: [obj3 v1: 0] raise: Break
@@ -225,6 +228,7 @@ FieldWatchpointTest >> testWatchVariableReadsInObject [
 	
 	self should: [obj1 v1] raise: Break.	
 	self shouldnt: [obj1 v1: 0] raise: Break.
+	
 	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
 	self shouldnt: [obj3 v1] raise: Break.
 	self shouldnt: [obj3 v1: 0] raise: Break
@@ -267,6 +271,7 @@ FieldWatchpointTest >> testWatchVariableWritesInObject [
 		
 	self should: [obj1 v1: 0] raise: Break.
 	self shouldnt: [obj1 v1] raise: Break.		
+			
 	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
 	self shouldnt: [obj3 v1] raise: Break.
 	self shouldnt: [obj3 v1: 0] raise: Break
@@ -301,6 +306,33 @@ FieldWatchpointTest >> testWatchVariablesIn [
 	
 ]
 
+{ #category : #'tests - object-centric' }
+FieldWatchpointTest >> testWatchVariablesInObject [	
+
+	wp := FieldWatchpoint watchVariablesInObject: obj2.	
+	self assert: wp targetInstance equals: obj2.	
+	
+	self should: [obj2 instVarReads] raise: Break.
+	self should: [obj2 instVarWrites] raise: Break.
+	self should: [obj2 v2] raise: Break.	
+	self should: [obj2 v2: 0] raise: Break.
+	self should: [obj2 v1] raise: Break.	
+	self should: [obj2 v1: 0] raise: Break.
+	
+	self shouldnt: [obj4 instVarReads] raise: Break.
+	self shouldnt: [obj4 instVarWrites] raise: Break.
+	self shouldnt: [obj4 v2] raise: Break.	
+	self shouldnt: [obj4 v2: 0] raise: Break.
+	self shouldnt: [obj4 v1] raise: Break.	
+	self shouldnt: [obj4 v1: 0] raise: Break.
+	
+	self shouldnt: [obj1 v1] raise: Break.	
+	self shouldnt: [obj1 v1: 0] raise: Break.
+	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
+	self shouldnt: [FieldWatchpointMockSubclass new ] raise: Break.
+	
+]
+
 { #category : #tests }
 FieldWatchpointTest >> testWatchVariablesReadsIn [	
 
@@ -327,6 +359,35 @@ FieldWatchpointTest >> testWatchVariablesReadsIn [
 	
 ]
 
+{ #category : #'tests - object-centric' }
+FieldWatchpointTest >> testWatchVariablesReadsInObject [	
+
+	wp := FieldWatchpoint watchVariablesReadsInObject: obj2.
+	self assert: wp targetInstance equals: obj2.
+	self assert: wp accessStrategy equals: #read.	 
+	
+	self should: [obj2 v2] raise: Break.		
+	self should: [obj2 instVarReads] raise: Break.
+	self should: [obj2 v1] raise: Break.
+	self shouldnt: [obj2 instVarWrites] raise: Break.
+	self shouldnt: [obj2 v1: 0] raise: Break.
+	self shouldnt: [obj2 v2: 0] raise: Break.
+	
+	
+	self shouldnt: [obj4 instVarReads] raise: Break.
+	self shouldnt: [obj4 instVarWrites] raise: Break.
+	self shouldnt: [obj4 v2] raise: Break.	
+	self shouldnt: [obj4 v2: 0] raise: Break.
+	self shouldnt: [obj4 v1] raise: Break.	
+	self shouldnt: [obj4 v1: 0] raise: Break.
+	
+	self shouldnt: [obj1 v1] raise: Break.	
+	self shouldnt: [obj1 v1: 0] raise: Break.
+	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
+	self shouldnt: [FieldWatchpointMockSubclass new ] raise: Break.
+	
+]
+
 { #category : #tests }
 FieldWatchpointTest >> testWatchVariablesWritesIn [	
 
@@ -350,5 +411,33 @@ FieldWatchpointTest >> testWatchVariablesWritesIn [
 	self should: [obj2 v2: 0] raise: Break.
 	self shouldnt: [obj2 v1] raise: Break.	
 	self should: [obj2 v1: 0] raise: Break.
+	
+]
+
+{ #category : #'tests - object-centric' }
+FieldWatchpointTest >> testWatchVariablesWritesInObject [	
+
+	wp := FieldWatchpoint watchVariablesWritesInObject: obj2.
+	self assert: wp targetInstance equals: obj2.
+	self assert: wp accessStrategy equals: #write.	
+	
+	self should: [obj2 instVarWrites] raise: Break.
+	self should: [obj2 v1: 0] raise: Break.
+	self should: [obj2 v2: 0] raise: Break.
+	self shouldnt: [obj2 v2] raise: Break.		
+	self shouldnt: [obj2 instVarReads] raise: Break.
+	self shouldnt: [obj2 v1] raise: Break.		
+	
+	self shouldnt: [obj4 instVarReads] raise: Break.
+	self shouldnt: [obj4 instVarWrites] raise: Break.
+	self shouldnt: [obj4 v2] raise: Break.	
+	self shouldnt: [obj4 v2: 0] raise: Break.
+	self shouldnt: [obj4 v1] raise: Break.	
+	self shouldnt: [obj4 v1: 0] raise: Break.
+	
+	self shouldnt: [obj1 v1] raise: Break.	
+	self shouldnt: [obj1 v1: 0] raise: Break.
+	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
+	self shouldnt: [FieldWatchpointMockSubclass new ] raise: Break.
 	
 ]
