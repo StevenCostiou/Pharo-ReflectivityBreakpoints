@@ -82,7 +82,7 @@ FieldWatchpointTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : #'tests - installation' }
 FieldWatchpointTest >> testAccessStrategy [
 	
 	wp := FieldWatchpoint watchVariablesIn: FieldWatchpointMockClass.
@@ -135,14 +135,14 @@ FieldWatchpointTest >> testAccessStrategy [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - initialization' }
 FieldWatchpointTest >> testAllSlotNamesFor [
 	self
 		assertCollection: (FieldWatchpoint allSlotNamesFor: FieldWatchpointMockSubclass)
 		equals: (OrderedCollection with: #v1 with: #v2)
 ]
 
-{ #category : #tests }
+{ #category : #'tests - initialization' }
 FieldWatchpointTest >> testInitialize [ 	
 	wp := FieldWatchpoint new.
 	self assert: wp accessStrategy equals: #all.
@@ -150,7 +150,7 @@ FieldWatchpointTest >> testInitialize [
 	self deny: wp isInstalled
 ]
 
-{ #category : #tests }
+{ #category : #'tests - installation' }
 FieldWatchpointTest >> testInstall [
 	
 	wp := FieldWatchpoint newWatchPointInClass: FieldWatchpointMockSubclass.	
@@ -158,7 +158,7 @@ FieldWatchpointTest >> testInstall [
 	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp)
 ]
 
-{ #category : #tests }
+{ #category : #'tests - installation' }
 FieldWatchpointTest >> testIsInstalled [
 	
 	wp := FieldWatchpoint newWatchPointInClass: FieldWatchpointMockSubclass.
@@ -167,13 +167,13 @@ FieldWatchpointTest >> testIsInstalled [
 	self assert: wp isInstalled
 ]
 
-{ #category : #tests }
+{ #category : #'tests - initialization' }
 FieldWatchpointTest >> testIsWatchpoint [
 	self assert: FieldWatchpoint new isWatchpoint.
 	self deny: Breakpoint new isWatchpoint
 ]
 
-{ #category : #tests }
+{ #category : #'tests - initialization' }
 FieldWatchpointTest >> testNewWatchPointForVariableInClass [
 	wp := FieldWatchpoint newWatchPointForVariable: #var inClass: #class.
 	self assert: wp class identicalTo: FieldWatchpoint.
@@ -181,7 +181,7 @@ FieldWatchpointTest >> testNewWatchPointForVariableInClass [
 	self assert: wp targetClass equals: #class
 ]
 
-{ #category : #tests }
+{ #category : #'tests - initialization' }
 FieldWatchpointTest >> testNewWatchPointInClass [
 	wp := FieldWatchpoint newWatchPointInClass: FieldWatchpointMockSubclass.
 	self assert: wp class identicalTo: FieldWatchpoint.
@@ -189,7 +189,7 @@ FieldWatchpointTest >> testNewWatchPointInClass [
 	self assert: wp targetClass equals: FieldWatchpointMockSubclass
 ]
 
-{ #category : #tests }
+{ #category : #'tests - installation' }
 FieldWatchpointTest >> testRemove [
 
 	wp := FieldWatchpoint watchVariablesIn: FieldWatchpointMockSubclass.
@@ -212,7 +212,7 @@ FieldWatchpointTest >> testRemove [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - installation' }
 FieldWatchpointTest >> testScopeTo [
 	| instance testContext |
 	instance := Object new.
@@ -228,7 +228,7 @@ FieldWatchpointTest >> testScopeTo [
 		deny: (wp link condition value: (testContext receiver: Object new))
 ]
 
-{ #category : #tests }
+{ #category : #'tests - class wide watchpoints' }
 FieldWatchpointTest >> testWatchVariableIn [ 	
 
 	wp := FieldWatchpoint watchVariable: #v1 in: FieldWatchpointMockClass.
@@ -265,7 +265,7 @@ FieldWatchpointTest >> testWatchVariableInObject [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - class wide watchpoints' }
 FieldWatchpointTest >> testWatchVariableReadsIn [ 	
 
 	wp := FieldWatchpoint watchVariableReads: #v1 in: FieldWatchpointMockClass.
@@ -306,7 +306,7 @@ FieldWatchpointTest >> testWatchVariableReadsInObject [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - class wide watchpoints' }
 FieldWatchpointTest >> testWatchVariableWritesIn [ 	
 
 	wp := FieldWatchpoint watchVariableWrites: #v1 in: FieldWatchpointMockClass.
@@ -351,7 +351,7 @@ FieldWatchpointTest >> testWatchVariableWritesInObject [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - class wide watchpoints' }
 FieldWatchpointTest >> testWatchVariablesIn [	
 
 	wp := FieldWatchpoint watchVariablesIn: FieldWatchpointMockSubclass.
@@ -403,7 +403,7 @@ FieldWatchpointTest >> testWatchVariablesInObject [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - class wide watchpoints' }
 FieldWatchpointTest >> testWatchVariablesReadsIn [	
 
 	wp := FieldWatchpoint watchVariablesReadsIn: FieldWatchpointMockSubclass.
@@ -458,7 +458,7 @@ FieldWatchpointTest >> testWatchVariablesReadsInObject [
 	
 ]
 
-{ #category : #tests }
+{ #category : #'tests - class wide watchpoints' }
 FieldWatchpointTest >> testWatchVariablesWritesIn [	
 
 	wp := FieldWatchpoint watchVariablesWritesIn: FieldWatchpointMockSubclass.
