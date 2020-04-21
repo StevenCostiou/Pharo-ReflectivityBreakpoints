@@ -56,15 +56,20 @@ FieldWatchpoint>>watchVariableWrites: aVariableName in: aClass
 FieldWatchpoint>>watchVariableReads: aVariableName in: aClass 
 ```
 
-### Breaking on a specific instance variable access
+### Scope the watchpoint to a specific object
 
+A similar API is available to watch variable accesses in a single specific object.
+Using this API, the system halts each time target variables in `anObject` are read or written.
+All other objects are unaffected by the watchpoint.
+
+**Break on any instance variable access in `anObject`** 
 ```Smalltalk
 FieldWatchpoint>>watchVariablesInObject: anObject
 FieldWatchpoint>>watchVariablesWritesInObject: anObject  
 FieldWatchpoint>>watchVariablesReadsInObject: anObject 
 ```
 
-
+**Break on a specific instance variable access in `anObject`** 
 ```Smalltalk
 FieldWatchpoint>>watchVariable: aVariableName inObject: anObject 
 FieldWatchpoint>>watchVariableWrites: aVariableName inObject: anObject  
