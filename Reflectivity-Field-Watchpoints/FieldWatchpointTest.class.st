@@ -237,7 +237,6 @@ FieldWatchpointTest >> testWatchVariableIn [
 	self assert: wp targetClass identicalTo: FieldWatchpointMockClass.
 	self assert: wp targetInstance equals: nil.
 	
-	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp).	
 	self assertCollection: wp link nodes asIdentitySet equals: self allNodesForV1 asIdentitySet.
 	
 	self should: [FieldWatchpointMockClass new] raise: Break.
@@ -273,9 +272,7 @@ FieldWatchpointTest >> testWatchVariableReadsIn [
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1).
 	self assert: wp targetClass identicalTo: FieldWatchpointMockClass.
 	self assert: wp targetInstance equals: nil.
-	self assert: wp accessStrategy equals: #read.
-	
-	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp).	
+
 	self assertCollection: wp link nodes asIdentitySet 
 			equals: (self allNodesForV1 select:[:n| n isVariable]) asIdentitySet.
 	
@@ -314,9 +311,7 @@ FieldWatchpointTest >> testWatchVariableWritesIn [
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1).
 	self assert: wp targetClass identicalTo: FieldWatchpointMockClass.
 	self assert: wp targetInstance equals: nil.
-	self assert: wp accessStrategy equals: #write.
-	
-	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp).	
+
 	self assertCollection: wp link nodes asIdentitySet 
 			equals: (self allNodesForV1 select:[:n| n isAssignment]) asIdentitySet.
 	
@@ -359,8 +354,7 @@ FieldWatchpointTest >> testWatchVariablesIn [
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
 	self assert: wp targetClass identicalTo: FieldWatchpointMockSubclass.
 	self assert: wp targetInstance equals: nil.
-	
-	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp).	
+
 	self assertCollection: wp link nodes asIdentitySet equals: self allNodes asIdentitySet.
 	
 	self should: [FieldWatchpointMockClass new] raise: Break.
@@ -412,7 +406,6 @@ FieldWatchpointTest >> testWatchVariablesReadsIn [
 	self assert: wp targetClass identicalTo: FieldWatchpointMockSubclass.
 	self assert: wp targetInstance equals: nil.
 	
-	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp).	
 	self assertCollection: wp link nodes asIdentitySet 
 			equals: (self allNodes select:[:n| n isVariable]) asIdentitySet.
 	
@@ -467,7 +460,6 @@ FieldWatchpointTest >> testWatchVariablesWritesIn [
 	self assert: wp targetClass identicalTo: FieldWatchpointMockSubclass.
 	self assert: wp targetInstance equals: nil.
 	
-	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp).	
 	self assertCollection: wp link nodes asIdentitySet 
 			equals: (self allNodes select:[:n| n isAssignment]) asIdentitySet.
 	
