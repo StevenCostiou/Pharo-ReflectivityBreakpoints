@@ -120,6 +120,12 @@ FieldWatchpoint >> remove [
 	isInstalled := false
 ]
 
+{ #category : #api }
+FieldWatchpoint >> scopeTo: anInstance [
+	self targetInstance: anInstance.
+	self condition: [ :ctx | ctx receiver == targetInstance ]
+]
+
 { #category : #accessing }
 FieldWatchpoint >> targetClass [
 	^ targetClass

@@ -123,6 +123,22 @@ FieldWatchpointTest >> testRemove [
 ]
 
 { #category : #tests }
+FieldWatchpointTest >> testScopeTo [
+	| instance testContext |
+	instance := Object new.
+	testContext := Context newForMethod: FieldWatchpointMockClass >> #v1.
+	wp := FieldWatchpoint new.
+	wp scopeTo: instance.
+	self assert: wp targetInstance identicalTo: instance.
+	self assert: wp link hasCondition.
+	self assertCollection: wp link conditionArguments equals: #(context).
+	self
+		assert: (wp link condition value: (testContext receiver: instance)).
+	self
+		deny: (wp link condition value: (testContext receiver: Object new))
+]
+
+{ #category : #tests }
 FieldWatchpointTest >> testWatchVariableIn [ 	
 
 	wp := FieldWatchpoint watchVariable: #v1 in: FieldWatchpointMockClass.
