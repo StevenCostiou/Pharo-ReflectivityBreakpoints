@@ -14,60 +14,61 @@ Class {
 	#category : #'Reflectivity-Field-Watchpoints'
 }
 
-{ #category : #API }
+{ #category : #private }
 FieldWatchpoint class >> allSlotNamesFor: aClass [
 	^ aClass allSlots collect: [ :s | s name ]
 ]
 
-{ #category : #API }
-FieldWatchpoint class >> watchVariable: aVariableName in: aClass [
+{ #category : #private }
+FieldWatchpoint class >> newWatchPointForVariable: aVariableName inClass: aClass [
 	^ self new
 		targetClass: aClass;
-		targetVariableNames: (OrderedCollection with: aVariableName);
+		targetVariableNames: (OrderedCollection with: aVariableName)
+]
+
+{ #category : #private }
+FieldWatchpoint class >> newWatchPointInClass: aClass [
+	^ self new
+		targetClass: aClass;
+		targetVariableNames: (self allSlotNamesFor: aClass)
+]
+
+{ #category : #API }
+FieldWatchpoint class >> watchVariable: aVariableName in: aClass [
+	^ (self newWatchPointForVariable: aVariableName inClass: aClass)
 		install
 ]
 
 { #category : #API }
 FieldWatchpoint class >> watchVariableReads: aVariableName in: aClass [
-	^ self new
-		targetClass: aClass;
+	^ (self newWatchPointForVariable: aVariableName inClass: aClass)
 		accessStrategy: #read;
-		targetVariableNames: (OrderedCollection with: aVariableName);
 		install
 ]
 
 { #category : #API }
 FieldWatchpoint class >> watchVariableWrites: aVariableName in: aClass [
-	^ self new
-		targetClass: aClass;
+	^ (self newWatchPointForVariable: aVariableName inClass: aClass)
 		accessStrategy: #write;
-		targetVariableNames: (OrderedCollection with: aVariableName);
 		install
 ]
 
 { #category : #API }
 FieldWatchpoint class >> watchVariablesIn: aClass [
-	^ self new
-		targetClass: aClass;
-		targetVariableNames: (self allSlotNamesFor: aClass);
-		install
+	^ (self newWatchPointInClass: aClass) install
 ]
 
 { #category : #API }
 FieldWatchpoint class >> watchVariablesReadsIn: aClass [
-	^ self new
-		targetClass: aClass;
+	^ (self newWatchPointInClass: aClass)
 		accessStrategy: #read;
-		targetVariableNames: (self allSlotNamesFor: aClass);
 		install
 ]
 
 { #category : #API }
 FieldWatchpoint class >> watchVariablesWritesIn: aClass [
-	^ self new
-		targetClass: aClass;
+	^ (self newWatchPointInClass: aClass)
 		accessStrategy: #write;
-		targetVariableNames: (self allSlotNamesFor: aClass);
 		install
 ]
 

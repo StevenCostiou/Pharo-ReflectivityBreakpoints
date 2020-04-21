@@ -100,6 +100,22 @@ FieldWatchpointTest >> testIsWatchpoint [
 ]
 
 { #category : #tests }
+FieldWatchpointTest >> testNewWatchPointForVariableInClass [
+	wp := FieldWatchpoint newWatchPointForVariable: #var inClass: #class.
+	self assert: wp class identicalTo: FieldWatchpoint.
+	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #var).
+	self assert: wp targetClass equals: #class
+]
+
+{ #category : #tests }
+FieldWatchpointTest >> testNewWatchPointInClass [
+	wp := FieldWatchpoint newWatchPointInClass: FieldWatchpointMockSubclass.
+	self assert: wp class identicalTo: FieldWatchpoint.
+	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
+	self assert: wp targetClass equals: FieldWatchpointMockSubclass
+]
+
+{ #category : #tests }
 FieldWatchpointTest >> testRemove [
 
 	wp := FieldWatchpoint watchVariablesIn: FieldWatchpointMockSubclass.
