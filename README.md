@@ -1,5 +1,8 @@
 # Pharo-ReflectivityBreakpoints
-Improving Reflectivity breakpoints 
+Improving Reflectivity breakpoints with:
+- a simple observer infrastructure to allow tools to monitor when breakpoints are added/removed
+- a field watchpoint implementation
+- an object-centric field watchpoint implementation
 
 ## Breakpoint Observer
 
@@ -18,4 +21,37 @@ To know where a breakpoint is installed (for example here with the first one):
 ```Smalltalk
 Breakpoint all first node. "gets the AST node on which the breakpoint is installed"
 Breakpoint all first node methodNode. "gets the method node in which the breakpoint is installed"
+```
+## Field Watchpoint
+
+A `FieldWatchpoint` is a breakpoint that halts the execution when a field of an object is accessed.
+
+It is implemented as a subclass of `BreakPoint`, therefore installation of field watchpoints is notified as a breakpoint change through the observer mechanics described above.
+
+Breakpoints and field watchpoints responds to the `isWatchpoint` interface, which returns `true` for instances of `FieldWatchpoint` and `false` otherwise.
+
+A field watchpoint installed on a specific instance variable of a class will install a breakpoint on all accesses to that instance variable, in the whole class hierarchy.
+For example, imagine that you have a class `A` that defines a variable `x`, and a subclass `B` extending `A`.
+Now, the point is you are debugging `B`, so you click on B and request the installation of a field watchpoint on `x`.
+The watchpoint will install a breakpoint in all methods from `B` that use `x`, and all methods from `A` that use `x`, because instances of `B` may call methods using `x` that are defined in `A`.
+
+
+### Breaking on any instance variable access
+
+Through the following API, you can configure a field watchpoint to break if any instance variable of any instance of a class `aClass` is accessed (read, write, or both).
+
+```Smalltalk
+FieldWatchpoint>>watchVariablesIn: aClass 
+FieldWatchpoint>>watchVariablesWritesIn: aClass 
+FieldWatchpoint>>watchVariablesReadsIn: aClass 
+```
+
+### Breaking on a specific instance variable access
+
+Through the following API, you can configure a field watchpoint to break if a specific instance variable named `aVariableName` of any instance of a class `aClass` is accessed (read, write, or both).
+
+```Smalltalk
+FieldWatchpoint>>watchVariable: aVariableName in: aClass 
+FieldWatchpoint>>watchVariableWrites: aVariableName in: aClass 
+FieldWatchpoint>>watchVariableReads: aVariableName in: aClass 
 ```
