@@ -39,10 +39,25 @@ FieldWatchpoint class >> watchVariable: aVariableName in: aClass [
 		install
 ]
 
+{ #category : #'API - object-centric' }
+FieldWatchpoint class >> watchVariable: aVariableName inObject: anObject [
+	^ (self newWatchPointForVariable: aVariableName inClass: anObject class)
+		scopeTo: anObject;
+		install
+]
+
 { #category : #API }
 FieldWatchpoint class >> watchVariableReads: aVariableName in: aClass [
 	^ (self newWatchPointForVariable: aVariableName inClass: aClass)
 		accessStrategy: #read;
+		install
+]
+
+{ #category : #'API - object-centric' }
+FieldWatchpoint class >> watchVariableReads: aVariableName inObject: anObject [
+	^ (self newWatchPointForVariable: aVariableName inClass: anObject class)
+		accessStrategy: #read;
+		scopeTo: anObject;
 		install
 ]
 
@@ -53,9 +68,24 @@ FieldWatchpoint class >> watchVariableWrites: aVariableName in: aClass [
 		install
 ]
 
+{ #category : #'API - object-centric' }
+FieldWatchpoint class >> watchVariableWrites: aVariableName inObject: anObject [
+	^ (self newWatchPointForVariable: aVariableName inClass: anObject class)
+		accessStrategy: #write;
+		scopeTo: anObject;
+		install
+]
+
 { #category : #API }
 FieldWatchpoint class >> watchVariablesIn: aClass [
 	^ (self newWatchPointInClass: aClass) install
+]
+
+{ #category : #'API - object-centric' }
+FieldWatchpoint class >> watchVariablesInObject: anObject [
+	^ (self newWatchPointInClass: anObject class)
+		scopeTo: anObject;
+		install
 ]
 
 { #category : #API }
@@ -65,10 +95,26 @@ FieldWatchpoint class >> watchVariablesReadsIn: aClass [
 		install
 ]
 
+{ #category : #'API - object-centric' }
+FieldWatchpoint class >> watchVariablesReadsInObject: anObject [
+	^ (self newWatchPointInClass: anObject class)
+		accessStrategy: #read;
+		scopeTo: anObject;
+		install
+]
+
 { #category : #API }
 FieldWatchpoint class >> watchVariablesWritesIn: aClass [
 	^ (self newWatchPointInClass: aClass)
 		accessStrategy: #write;
+		install
+]
+
+{ #category : #'API - object-centric' }
+FieldWatchpoint class >> watchVariablesWritesInObject: anObject [
+	^ (self newWatchPointInClass: anObject class)
+		accessStrategy: #write;
+		scopeTo: anObject;
 		install
 ]
 
