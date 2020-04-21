@@ -55,3 +55,18 @@ FieldWatchpoint>>watchVariable: aVariableName in: aClass
 FieldWatchpoint>>watchVariableWrites: aVariableName in: aClass 
 FieldWatchpoint>>watchVariableReads: aVariableName in: aClass 
 ```
+
+### Breaking on a specific instance variable access
+
+```Smalltalk
+FieldWatchpoint>>watchVariablesInObject: anObject
+FieldWatchpoint>>watchVariablesWritesInObject: anObject  
+FieldWatchpoint>>watchVariablesReadsInObject: anObject 
+```
+
+
+```Smalltalk
+FieldWatchpoint>>watchVariable: aVariableName inObject: anObject 
+FieldWatchpoint>>watchVariableWrites: aVariableName inObject: anObject  
+FieldWatchpoint>>watchVariableReads: aVariableName inObject: anObject 
+```
