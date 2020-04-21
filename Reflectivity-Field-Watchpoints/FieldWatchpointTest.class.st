@@ -83,6 +83,59 @@ FieldWatchpointTest >> tearDown [
 ]
 
 { #category : #tests }
+FieldWatchpointTest >> testAccessStrategy [
+	
+	wp := FieldWatchpoint watchVariablesIn: FieldWatchpointMockClass.
+	self assert: wp accessStrategy equals: #all.
+	wp remove.
+	
+	wp := FieldWatchpoint watchVariable: #v1 in: FieldWatchpointMockClass.
+	self assert: wp accessStrategy equals: #all.
+	wp remove.
+	
+	wp := FieldWatchpoint watchVariable: #v1 inObject: obj1.
+	self assert: wp accessStrategy equals: #all.
+	wp remove.
+	
+	wp := FieldWatchpoint watchVariablesInObject: obj1.	
+	self assert: wp accessStrategy equals: #all.
+	wp remove.
+		
+	wp := FieldWatchpoint watchVariableWrites: #v1 in: FieldWatchpointMockClass.
+	self assert: wp accessStrategy equals: #write.
+	wp remove.
+	
+	wp := FieldWatchpoint watchVariablesWritesIn: FieldWatchpointMockClass.
+	self assert: wp accessStrategy equals: #write.
+	wp remove.
+	
+	wp := FieldWatchpoint watchVariablesWritesIn: FieldWatchpointMockSubclass.
+	self assert: wp accessStrategy equals: #write.
+	wp remove.
+	
+	wp := FieldWatchpoint watchVariableWrites: #v1 inObject: obj1.
+	self assert: wp accessStrategy equals: #write.
+	wp remove.
+	
+	wp := FieldWatchpoint watchVariablesReadsInObject: obj1.
+	self assert: wp accessStrategy equals: #read.
+	wp remove.
+	
+	wp := FieldWatchpoint watchVariableReads: #v1 in: FieldWatchpointMockClass.
+	self assert: wp accessStrategy equals: #read.
+	wp remove.
+	
+	wp := FieldWatchpoint watchVariableReads: #v1 inObject: obj1.
+	self assert: wp accessStrategy equals: #read.
+	wp remove.
+	
+	wp := FieldWatchpoint watchVariablesReadsInObject: obj1.
+	self assert: wp accessStrategy equals: #read.
+	wp remove.
+	
+]
+
+{ #category : #tests }
 FieldWatchpointTest >> testAllSlotNamesFor [
 	self
 		assertCollection: (FieldWatchpoint allSlotNamesFor: FieldWatchpointMockSubclass)
@@ -95,6 +148,23 @@ FieldWatchpointTest >> testInitialize [
 	self assert: wp accessStrategy equals: #all.
 	self assertEmpty: wp targetVariableNames.
 	self deny: wp isInstalled
+]
+
+{ #category : #tests }
+FieldWatchpointTest >> testInstall [
+	
+	wp := FieldWatchpoint newWatchPointInClass: FieldWatchpointMockSubclass.	
+	wp install.
+	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp)
+]
+
+{ #category : #tests }
+FieldWatchpointTest >> testIsInstalled [
+	
+	wp := FieldWatchpoint newWatchPointInClass: FieldWatchpointMockSubclass.
+	self deny: wp isInstalled.
+	wp install.
+	self assert: wp isInstalled
 ]
 
 { #category : #tests }
