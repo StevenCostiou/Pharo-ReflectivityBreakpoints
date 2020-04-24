@@ -2,7 +2,7 @@
 I am a breakpoint installed on one or more instance variables of a class or of an object.
 "
 Class {
-	#name : #FieldWatchpoint,
+	#name : #VariableBreakpoint,
 	#superclass : #Breakpoint,
 	#instVars : [
 		'targetClass',
@@ -15,88 +15,88 @@ Class {
 }
 
 { #category : #private }
-FieldWatchpoint class >> allSlotNamesFor: aClass [
+VariableBreakpoint class >> allSlotNamesFor: aClass [
 	^ aClass allSlots collect: [ :s | s name ]
 ]
 
 { #category : #private }
-FieldWatchpoint class >> newWatchPointForVariable: aVariableName inClass: aClass [
+VariableBreakpoint class >> newBreakpointForVariable: aVariableName inClass: aClass [
 	^ self new
 		targetClass: aClass;
 		targetVariableNames: (OrderedCollection with: aVariableName)
 ]
 
 { #category : #private }
-FieldWatchpoint class >> newWatchPointInClass: aClass [
+VariableBreakpoint class >> newWatchPointInClass: aClass [
 	^ self new
 		targetClass: aClass;
 		targetVariableNames: (self allSlotNamesFor: aClass)
 ]
 
 { #category : #API }
-FieldWatchpoint class >> watchVariable: aVariableName in: aClass [
-	^ (self newWatchPointForVariable: aVariableName inClass: aClass)
+VariableBreakpoint class >> watchVariable: aVariableName in: aClass [
+	^ (self newBreakpointForVariable: aVariableName inClass: aClass)
 		install
 ]
 
 { #category : #'API - object-centric' }
-FieldWatchpoint class >> watchVariable: aVariableName inObject: anObject [
-	^ (self newWatchPointForVariable: aVariableName inClass: anObject class)
+VariableBreakpoint class >> watchVariable: aVariableName inObject: anObject [
+	^ (self newBreakpointForVariable: aVariableName inClass: anObject class)
 		scopeTo: anObject;
 		install
 ]
 
 { #category : #API }
-FieldWatchpoint class >> watchVariableReads: aVariableName in: aClass [
-	^ (self newWatchPointForVariable: aVariableName inClass: aClass)
+VariableBreakpoint class >> watchVariableReads: aVariableName in: aClass [
+	^ (self newBreakpointForVariable: aVariableName inClass: aClass)
 		accessStrategy: #read;
 		install
 ]
 
 { #category : #'API - object-centric' }
-FieldWatchpoint class >> watchVariableReads: aVariableName inObject: anObject [
-	^ (self newWatchPointForVariable: aVariableName inClass: anObject class)
+VariableBreakpoint class >> watchVariableReads: aVariableName inObject: anObject [
+	^ (self newBreakpointForVariable: aVariableName inClass: anObject class)
 		accessStrategy: #read;
 		scopeTo: anObject;
 		install
 ]
 
 { #category : #API }
-FieldWatchpoint class >> watchVariableWrites: aVariableName in: aClass [
-	^ (self newWatchPointForVariable: aVariableName inClass: aClass)
+VariableBreakpoint class >> watchVariableWrites: aVariableName in: aClass [
+	^ (self newBreakpointForVariable: aVariableName inClass: aClass)
 		accessStrategy: #write;
 		install
 ]
 
 { #category : #'API - object-centric' }
-FieldWatchpoint class >> watchVariableWrites: aVariableName inObject: anObject [
-	^ (self newWatchPointForVariable: aVariableName inClass: anObject class)
+VariableBreakpoint class >> watchVariableWrites: aVariableName inObject: anObject [
+	^ (self newBreakpointForVariable: aVariableName inClass: anObject class)
 		accessStrategy: #write;
 		scopeTo: anObject;
 		install
 ]
 
 { #category : #API }
-FieldWatchpoint class >> watchVariablesIn: aClass [
+VariableBreakpoint class >> watchVariablesIn: aClass [
 	^ (self newWatchPointInClass: aClass) install
 ]
 
 { #category : #'API - object-centric' }
-FieldWatchpoint class >> watchVariablesInObject: anObject [
+VariableBreakpoint class >> watchVariablesInObject: anObject [
 	^ (self newWatchPointInClass: anObject class)
 		scopeTo: anObject;
 		install
 ]
 
 { #category : #API }
-FieldWatchpoint class >> watchVariablesReadsIn: aClass [
+VariableBreakpoint class >> watchVariablesReadsIn: aClass [
 	^ (self newWatchPointInClass: aClass)
 		accessStrategy: #read;
 		install
 ]
 
 { #category : #'API - object-centric' }
-FieldWatchpoint class >> watchVariablesReadsInObject: anObject [
+VariableBreakpoint class >> watchVariablesReadsInObject: anObject [
 	^ (self newWatchPointInClass: anObject class)
 		accessStrategy: #read;
 		scopeTo: anObject;
@@ -104,14 +104,14 @@ FieldWatchpoint class >> watchVariablesReadsInObject: anObject [
 ]
 
 { #category : #API }
-FieldWatchpoint class >> watchVariablesWritesIn: aClass [
+VariableBreakpoint class >> watchVariablesWritesIn: aClass [
 	^ (self newWatchPointInClass: aClass)
 		accessStrategy: #write;
 		install
 ]
 
 { #category : #'API - object-centric' }
-FieldWatchpoint class >> watchVariablesWritesInObject: anObject [
+VariableBreakpoint class >> watchVariablesWritesInObject: anObject [
 	^ (self newWatchPointInClass: anObject class)
 		accessStrategy: #write;
 		scopeTo: anObject;
@@ -119,17 +119,17 @@ FieldWatchpoint class >> watchVariablesWritesInObject: anObject [
 ]
 
 { #category : #accessing }
-FieldWatchpoint >> accessStrategy [
+VariableBreakpoint >> accessStrategy [
 	^ accessStrategy
 ]
 
 { #category : #accessing }
-FieldWatchpoint >> accessStrategy: anObject [
+VariableBreakpoint >> accessStrategy: anObject [
 	accessStrategy := anObject
 ]
 
 { #category : #initialize }
-FieldWatchpoint >> initialize [
+VariableBreakpoint >> initialize [
 	super initialize.
 	accessStrategy := #all.
 	targetVariableNames := OrderedCollection new.
@@ -137,7 +137,7 @@ FieldWatchpoint >> initialize [
 ]
 
 { #category : #install }
-FieldWatchpoint >> install [
+VariableBreakpoint >> install [
 	self isInstalled
 		ifTrue: [ ^ self ].
 	targetVariableNames
@@ -151,54 +151,54 @@ FieldWatchpoint >> install [
 ]
 
 { #category : #testing }
-FieldWatchpoint >> isInstalled [
+VariableBreakpoint >> isInstalled [
 	^isInstalled
 ]
 
 { #category : #testing }
-FieldWatchpoint >> isWatchpoint [
+VariableBreakpoint >> isWatchpoint [
 	^true
 ]
 
 { #category : #install }
-FieldWatchpoint >> remove [
+VariableBreakpoint >> remove [
 	super remove.
 	targetInstance := nil.
 	isInstalled := false
 ]
 
 { #category : #api }
-FieldWatchpoint >> scopeTo: anInstance [
+VariableBreakpoint >> scopeTo: anInstance [
 	self targetInstance: anInstance.
 	self condition: [ :ctx | ctx receiver == targetInstance ]
 ]
 
 { #category : #accessing }
-FieldWatchpoint >> targetClass [
+VariableBreakpoint >> targetClass [
 	^ targetClass
 ]
 
 { #category : #accessing }
-FieldWatchpoint >> targetClass: anObject [
+VariableBreakpoint >> targetClass: anObject [
 	targetClass := anObject
 ]
 
 { #category : #accessing }
-FieldWatchpoint >> targetInstance [
+VariableBreakpoint >> targetInstance [
 	^ targetInstance
 ]
 
 { #category : #accessing }
-FieldWatchpoint >> targetInstance: anObject [
+VariableBreakpoint >> targetInstance: anObject [
 	targetInstance := anObject
 ]
 
 { #category : #accessing }
-FieldWatchpoint >> targetVariableNames [
+VariableBreakpoint >> targetVariableNames [
 	^ targetVariableNames
 ]
 
 { #category : #accessing }
-FieldWatchpoint >> targetVariableNames: anObject [
+VariableBreakpoint >> targetVariableNames: anObject [
 	targetVariableNames := anObject
 ]

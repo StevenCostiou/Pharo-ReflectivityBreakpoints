@@ -9,5 +9,5 @@ Class {
 
 { #category : #'code-critics' }
 ManifestReflectivityFieldWatchpoints class >> ruleRBLongMethodsRuleV1FalsePositive [
-	^ #(#(#(#RGMethodDefinition #(#FieldWatchpointTest #testAccessStrategy #false)) #'2020-04-21T18:06:08.416221+02:00') )
+	^ #(#(#(#RGMethodDefinition #(#VariableBreakpointTest #testAccessStrategy #false)) #'2020-04-21T18:06:08.416221+02:00') )
 ]

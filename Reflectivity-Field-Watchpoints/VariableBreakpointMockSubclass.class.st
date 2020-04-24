@@ -2,8 +2,8 @@
 I have instvar accesses and I have a super class with variables that I access
 "
 Class {
-	#name : #FieldWatchpointMockSubclass,
-	#superclass : #FieldWatchpointMockClass,
+	#name : #VariableBreakpointMockSubclass,
+	#superclass : #VariableBreakpointMockClass,
 	#instVars : [
 		'v2'
 	],
@@ -11,28 +11,28 @@ Class {
 }
 
 { #category : #initialize }
-FieldWatchpointMockSubclass >> initialize [
+VariableBreakpointMockSubclass >> initialize [
 	super initialize.
 	v2 := 0
 ]
 
 { #category : #accessing }
-FieldWatchpointMockSubclass >> instVarReads [
+VariableBreakpointMockSubclass >> instVarReads [
 	^v1 + v2
 ]
 
 { #category : #accessing }
-FieldWatchpointMockSubclass >> instVarWrites [
+VariableBreakpointMockSubclass >> instVarWrites [
 	v1 := 4.
 	v2 := 2
 ]
 
 { #category : #accessing }
-FieldWatchpointMockSubclass >> v2 [
+VariableBreakpointMockSubclass >> v2 [
 	^ v2
 ]
 
 { #category : #accessing }
-FieldWatchpointMockSubclass >> v2: anObject [
+VariableBreakpointMockSubclass >> v2: anObject [
 	v2 := anObject
 ]

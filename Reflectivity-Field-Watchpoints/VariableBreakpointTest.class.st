@@ -1,5 +1,5 @@
 Class {
-	#name : #FieldWatchpointTest,
+	#name : #VariableBreakpointTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'obj1',
@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : #helpers }
-FieldWatchpointTest >> allNodes [
+VariableBreakpointTest >> allNodes [
 	^ OrderedCollection new
 		addAll: self allNodesForV1;
 		addAll: self allNodesForV2;
@@ -20,7 +20,7 @@ FieldWatchpointTest >> allNodes [
 ]
 
 { #category : #helpers }
-FieldWatchpointTest >> allNodesForV1 [
+VariableBreakpointTest >> allNodesForV1 [
 	^ OrderedCollection new
 		addAll: self nodesForV1InFieldWatchpointMockClass;
 		addAll: self nodesForV1InFieldWatchpointMockSubclass;
@@ -28,54 +28,54 @@ FieldWatchpointTest >> allNodesForV1 [
 ]
 
 { #category : #helpers }
-FieldWatchpointTest >> allNodesForV2 [
+VariableBreakpointTest >> allNodesForV2 [
 	^ OrderedCollection new
 		addAll: self nodesForV2InFieldWatchpointMockSubclass;
 		yourself
 ]
 
 { #category : #helpers }
-FieldWatchpointTest >> nodesForV1InFieldWatchpointMockClass [
+VariableBreakpointTest >> nodesForV1InFieldWatchpointMockClass [
 	|nodes |
 	nodes := OrderedCollection new.
-	nodes add: (FieldWatchpointMockClass>>#initialize) ast statements first.
-	nodes add: (FieldWatchpointMockClass>>#v1) ast statements first value.
-	nodes add: (FieldWatchpointMockClass>>#v1:) ast statements first.
+	nodes add: (VariableBreakpointMockClass>>#initialize) ast statements first.
+	nodes add: (VariableBreakpointMockClass>>#v1) ast statements first value.
+	nodes add: (VariableBreakpointMockClass>>#v1:) ast statements first.
 	^nodes
 ]
 
 { #category : #helpers }
-FieldWatchpointTest >> nodesForV1InFieldWatchpointMockSubclass [
+VariableBreakpointTest >> nodesForV1InFieldWatchpointMockSubclass [
 	|nodes |
 	nodes := OrderedCollection new.
-	nodes add: (FieldWatchpointMockSubclass>>#instVarWrites) ast statements first.
-	nodes add: (FieldWatchpointMockSubclass>>#instVarReads) ast statements first value receiver.
+	nodes add: (VariableBreakpointMockSubclass>>#instVarWrites) ast statements first.
+	nodes add: (VariableBreakpointMockSubclass>>#instVarReads) ast statements first value receiver.
 	^nodes
 ]
 
 { #category : #helpers }
-FieldWatchpointTest >> nodesForV2InFieldWatchpointMockSubclass [
+VariableBreakpointTest >> nodesForV2InFieldWatchpointMockSubclass [
 	|nodes |
 	nodes := OrderedCollection new.
-	nodes add: (FieldWatchpointMockSubclass>>#initialize) ast statements second.
-	nodes add: (FieldWatchpointMockSubclass>>#instVarReads) ast statements first value arguments first.
-	nodes add: (FieldWatchpointMockSubclass>>#instVarWrites) ast statements second.
-	nodes add: (FieldWatchpointMockSubclass>>#v2) ast statements first value.
-	nodes add: (FieldWatchpointMockSubclass>>#v2:) ast statements first.
+	nodes add: (VariableBreakpointMockSubclass>>#initialize) ast statements second.
+	nodes add: (VariableBreakpointMockSubclass>>#instVarReads) ast statements first value arguments first.
+	nodes add: (VariableBreakpointMockSubclass>>#instVarWrites) ast statements second.
+	nodes add: (VariableBreakpointMockSubclass>>#v2) ast statements first value.
+	nodes add: (VariableBreakpointMockSubclass>>#v2:) ast statements first.
 	^nodes
 ]
 
 { #category : #running }
-FieldWatchpointTest >> setUp [
+VariableBreakpointTest >> setUp [
 	"Hooks that subclasses may override to define the fixture of test."
-	obj1 := FieldWatchpointMockClass new.
-	obj2 := FieldWatchpointMockSubclass new.
-	obj3 := FieldWatchpointMockClass new.
-	obj4 := FieldWatchpointMockSubclass new
+	obj1 := VariableBreakpointMockClass new.
+	obj2 := VariableBreakpointMockSubclass new.
+	obj3 := VariableBreakpointMockClass new.
+	obj4 := VariableBreakpointMockSubclass new
 ]
 
 { #category : #running }
-FieldWatchpointTest >> tearDown [
+VariableBreakpointTest >> tearDown [
 	wp
 		ifNotNil: [ wp isInstalled
 				ifTrue: [ wp remove ] ].
@@ -83,126 +83,126 @@ FieldWatchpointTest >> tearDown [
 ]
 
 { #category : #'tests - installation' }
-FieldWatchpointTest >> testAccessStrategy [
+VariableBreakpointTest >> testAccessStrategy [
 	
-	wp := FieldWatchpoint watchVariablesIn: FieldWatchpointMockClass.
+	wp := VariableBreakpoint watchVariablesIn: VariableBreakpointMockClass.
 	self assert: wp accessStrategy equals: #all.
 	wp remove.
 	
-	wp := FieldWatchpoint watchVariable: #v1 in: FieldWatchpointMockClass.
+	wp := VariableBreakpoint watchVariable: #v1 in: VariableBreakpointMockClass.
 	self assert: wp accessStrategy equals: #all.
 	wp remove.
 	
-	wp := FieldWatchpoint watchVariable: #v1 inObject: obj1.
+	wp := VariableBreakpoint watchVariable: #v1 inObject: obj1.
 	self assert: wp accessStrategy equals: #all.
 	wp remove.
 	
-	wp := FieldWatchpoint watchVariablesInObject: obj1.	
+	wp := VariableBreakpoint watchVariablesInObject: obj1.	
 	self assert: wp accessStrategy equals: #all.
 	wp remove.
 		
-	wp := FieldWatchpoint watchVariableWrites: #v1 in: FieldWatchpointMockClass.
+	wp := VariableBreakpoint watchVariableWrites: #v1 in: VariableBreakpointMockClass.
 	self assert: wp accessStrategy equals: #write.
 	wp remove.
 	
-	wp := FieldWatchpoint watchVariablesWritesIn: FieldWatchpointMockClass.
+	wp := VariableBreakpoint watchVariablesWritesIn: VariableBreakpointMockClass.
 	self assert: wp accessStrategy equals: #write.
 	wp remove.
 	
-	wp := FieldWatchpoint watchVariablesWritesIn: FieldWatchpointMockSubclass.
+	wp := VariableBreakpoint watchVariablesWritesIn: VariableBreakpointMockSubclass.
 	self assert: wp accessStrategy equals: #write.
 	wp remove.
 	
-	wp := FieldWatchpoint watchVariableWrites: #v1 inObject: obj1.
+	wp := VariableBreakpoint watchVariableWrites: #v1 inObject: obj1.
 	self assert: wp accessStrategy equals: #write.
 	wp remove.
 	
-	wp := FieldWatchpoint watchVariablesReadsInObject: obj1.
+	wp := VariableBreakpoint watchVariablesReadsInObject: obj1.
 	self assert: wp accessStrategy equals: #read.
 	wp remove.
 	
-	wp := FieldWatchpoint watchVariableReads: #v1 in: FieldWatchpointMockClass.
+	wp := VariableBreakpoint watchVariableReads: #v1 in: VariableBreakpointMockClass.
 	self assert: wp accessStrategy equals: #read.
 	wp remove.
 	
-	wp := FieldWatchpoint watchVariableReads: #v1 inObject: obj1.
+	wp := VariableBreakpoint watchVariableReads: #v1 inObject: obj1.
 	self assert: wp accessStrategy equals: #read.
 	wp remove.
 	
-	wp := FieldWatchpoint watchVariablesReadsInObject: obj1.
+	wp := VariableBreakpoint watchVariablesReadsInObject: obj1.
 	self assert: wp accessStrategy equals: #read.
 	wp remove.
 	
 ]
 
 { #category : #'tests - initialization' }
-FieldWatchpointTest >> testAllSlotNamesFor [
+VariableBreakpointTest >> testAllSlotNamesFor [
 	self
-		assertCollection: (FieldWatchpoint allSlotNamesFor: FieldWatchpointMockSubclass)
+		assertCollection: (VariableBreakpoint allSlotNamesFor: VariableBreakpointMockSubclass)
 		equals: (OrderedCollection with: #v1 with: #v2)
 ]
 
 { #category : #'tests - initialization' }
-FieldWatchpointTest >> testInitialize [ 	
-	wp := FieldWatchpoint new.
+VariableBreakpointTest >> testInitialize [ 	
+	wp := VariableBreakpoint new.
 	self assert: wp accessStrategy equals: #all.
 	self assertEmpty: wp targetVariableNames.
 	self deny: wp isInstalled
 ]
 
 { #category : #'tests - installation' }
-FieldWatchpointTest >> testInstall [
+VariableBreakpointTest >> testInstall [
 	
-	wp := FieldWatchpoint newWatchPointInClass: FieldWatchpointMockSubclass.	
+	wp := VariableBreakpoint newWatchPointInClass: VariableBreakpointMockSubclass.	
 	wp install.
 	self assertCollection: Breakpoint all includesAll: (OrderedCollection with: wp)
 ]
 
 { #category : #'tests - installation' }
-FieldWatchpointTest >> testIsInstalled [
+VariableBreakpointTest >> testIsInstalled [
 	
-	wp := FieldWatchpoint newWatchPointInClass: FieldWatchpointMockSubclass.
+	wp := VariableBreakpoint newWatchPointInClass: VariableBreakpointMockSubclass.
 	self deny: wp isInstalled.
 	wp install.
 	self assert: wp isInstalled
 ]
 
 { #category : #'tests - initialization' }
-FieldWatchpointTest >> testIsWatchpoint [
-	self assert: FieldWatchpoint new isWatchpoint.
+VariableBreakpointTest >> testIsWatchpoint [
+	self assert: VariableBreakpoint new isWatchpoint.
 	self deny: Breakpoint new isWatchpoint
 ]
 
 { #category : #'tests - initialization' }
-FieldWatchpointTest >> testNewWatchPointForVariableInClass [
-	wp := FieldWatchpoint newWatchPointForVariable: #var inClass: #class.
-	self assert: wp class identicalTo: FieldWatchpoint.
+VariableBreakpointTest >> testNewBreakpointForVariableInClass [
+	wp := VariableBreakpoint newBreakpointForVariable: #var inClass: #class.
+	self assert: wp class identicalTo: VariableBreakpoint.
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #var).
 	self assert: wp targetClass equals: #class
 ]
 
 { #category : #'tests - initialization' }
-FieldWatchpointTest >> testNewWatchPointInClass [
-	wp := FieldWatchpoint newWatchPointInClass: FieldWatchpointMockSubclass.
-	self assert: wp class identicalTo: FieldWatchpoint.
+VariableBreakpointTest >> testNewWatchPointInClass [
+	wp := VariableBreakpoint newWatchPointInClass: VariableBreakpointMockSubclass.
+	self assert: wp class identicalTo: VariableBreakpoint.
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
-	self assert: wp targetClass equals: FieldWatchpointMockSubclass
+	self assert: wp targetClass equals: VariableBreakpointMockSubclass
 ]
 
 { #category : #'tests - installation' }
-FieldWatchpointTest >> testRemove [
+VariableBreakpointTest >> testRemove [
 
-	wp := FieldWatchpoint watchVariablesIn: FieldWatchpointMockSubclass.
+	wp := VariableBreakpoint watchVariablesIn: VariableBreakpointMockSubclass.
 	wp remove.
 	
 	self denyCollection: Breakpoint all includesAll: (OrderedCollection with: wp).	
 	self assertEmpty: wp link nodes.
 	self assertEmpty: (self allNodes asIdentitySet flatCollect:[:n| n links]).
 	
-	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
+	self shouldnt: [VariableBreakpointMockClass new] raise: Break.
 	self shouldnt: [obj1 v1] raise: Break.	
 	self shouldnt: [obj1 v1: 0] raise: Break.
-	self shouldnt: [FieldWatchpointMockSubclass new ] raise: Break.
+	self shouldnt: [VariableBreakpointMockSubclass new ] raise: Break.
 	self shouldnt: [obj2 instVarReads] raise: Break.
 	self shouldnt: [obj2 instVarWrites] raise: Break.
 	self shouldnt: [obj2 v2] raise: Break.	
@@ -213,11 +213,11 @@ FieldWatchpointTest >> testRemove [
 ]
 
 { #category : #'tests - installation' }
-FieldWatchpointTest >> testScopeTo [
+VariableBreakpointTest >> testScopeTo [
 	| instance testContext |
 	instance := Object new.
-	testContext := Context newForMethod: FieldWatchpointMockClass >> #v1.
-	wp := FieldWatchpoint new.
+	testContext := Context newForMethod: VariableBreakpointMockClass >> #v1.
+	wp := VariableBreakpoint new.
 	wp scopeTo: instance.
 	self assert: wp targetInstance identicalTo: instance.
 	self assert: wp link hasCondition.
@@ -229,20 +229,20 @@ FieldWatchpointTest >> testScopeTo [
 ]
 
 { #category : #'tests - class wide watchpoints' }
-FieldWatchpointTest >> testWatchVariableIn [ 	
+VariableBreakpointTest >> testWatchVariableIn [ 	
 
-	wp := FieldWatchpoint watchVariable: #v1 in: FieldWatchpointMockClass.
+	wp := VariableBreakpoint watchVariable: #v1 in: VariableBreakpointMockClass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1).
-	self assert: wp targetClass identicalTo: FieldWatchpointMockClass.
+	self assert: wp targetClass identicalTo: VariableBreakpointMockClass.
 	self assert: wp targetInstance equals: nil.
 	
 	self assertCollection: wp link nodes asIdentitySet equals: self allNodesForV1 asIdentitySet.
 	
-	self should: [FieldWatchpointMockClass new] raise: Break.
+	self should: [VariableBreakpointMockClass new] raise: Break.
 	self should: [obj1 v1] raise: Break.	
 	self should: [obj1 v1: 0] raise: Break.
-	self should: [ FieldWatchpointMockSubclass new ] raise: Break.
+	self should: [ VariableBreakpointMockSubclass new ] raise: Break.
 	self should: [ obj2 instVarReads] raise: Break.
 	self should: [ obj2 instVarWrites] raise: Break
 	
@@ -250,14 +250,14 @@ FieldWatchpointTest >> testWatchVariableIn [
 ]
 
 { #category : #'tests - object-centric' }
-FieldWatchpointTest >> testWatchVariableInObject [
-	wp := FieldWatchpoint watchVariable: #v1 inObject: obj1.
+VariableBreakpointTest >> testWatchVariableInObject [
+	wp := VariableBreakpoint watchVariable: #v1 inObject: obj1.
 	self assert: wp targetInstance equals: obj1.	
 	
 	self should: [obj1 v1] raise: Break.	
 	self should: [obj1 v1: 0] raise: Break.	
 		
-	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
+	self shouldnt: [VariableBreakpointMockClass new] raise: Break.
 	self shouldnt: [obj3 v1] raise: Break.
 	self shouldnt: [obj3 v1: 0] raise: Break
 	
@@ -265,21 +265,21 @@ FieldWatchpointTest >> testWatchVariableInObject [
 ]
 
 { #category : #'tests - class wide watchpoints' }
-FieldWatchpointTest >> testWatchVariableReadsIn [ 	
+VariableBreakpointTest >> testWatchVariableReadsIn [ 	
 
-	wp := FieldWatchpoint watchVariableReads: #v1 in: FieldWatchpointMockClass.
+	wp := VariableBreakpoint watchVariableReads: #v1 in: VariableBreakpointMockClass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1).
-	self assert: wp targetClass identicalTo: FieldWatchpointMockClass.
+	self assert: wp targetClass identicalTo: VariableBreakpointMockClass.
 	self assert: wp targetInstance equals: nil.
 
 	self assertCollection: wp link nodes asIdentitySet 
 			equals: (self allNodesForV1 select:[:n| n isVariable]) asIdentitySet.
 	
-	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
+	self shouldnt: [VariableBreakpointMockClass new] raise: Break.
 	self should: [obj1 v1] raise: Break.	
 	self shouldnt: [obj1 v1: 0] raise: Break.
-	self shouldnt: [ FieldWatchpointMockSubclass new ] raise: Break.
+	self shouldnt: [ VariableBreakpointMockSubclass new ] raise: Break.
 	self should: [ obj2 instVarReads] raise: Break.
 	self shouldnt: [ obj2 instVarWrites] raise: Break
 	
@@ -287,16 +287,16 @@ FieldWatchpointTest >> testWatchVariableReadsIn [
 ]
 
 { #category : #'tests - object-centric' }
-FieldWatchpointTest >> testWatchVariableReadsInObject [ 	
+VariableBreakpointTest >> testWatchVariableReadsInObject [ 	
 
-	wp := FieldWatchpoint watchVariableReads: #v1 inObject: obj1.
+	wp := VariableBreakpoint watchVariableReads: #v1 inObject: obj1.
 	self assert: wp targetInstance equals: obj1.
 	self assert: wp accessStrategy equals: #read.
 	
 	self should: [obj1 v1] raise: Break.	
 	self shouldnt: [obj1 v1: 0] raise: Break.
 	
-	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
+	self shouldnt: [VariableBreakpointMockClass new] raise: Break.
 	self shouldnt: [obj3 v1] raise: Break.
 	self shouldnt: [obj3 v1: 0] raise: Break
 	
@@ -304,21 +304,21 @@ FieldWatchpointTest >> testWatchVariableReadsInObject [
 ]
 
 { #category : #'tests - class wide watchpoints' }
-FieldWatchpointTest >> testWatchVariableWritesIn [ 	
+VariableBreakpointTest >> testWatchVariableWritesIn [ 	
 
-	wp := FieldWatchpoint watchVariableWrites: #v1 in: FieldWatchpointMockClass.
+	wp := VariableBreakpoint watchVariableWrites: #v1 in: VariableBreakpointMockClass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1).
-	self assert: wp targetClass identicalTo: FieldWatchpointMockClass.
+	self assert: wp targetClass identicalTo: VariableBreakpointMockClass.
 	self assert: wp targetInstance equals: nil.
 
 	self assertCollection: wp link nodes asIdentitySet 
 			equals: (self allNodesForV1 select:[:n| n isAssignment]) asIdentitySet.
 	
-	self should: [FieldWatchpointMockClass new] raise: Break.
+	self should: [VariableBreakpointMockClass new] raise: Break.
 	self shouldnt: [obj1 v1] raise: Break.	
 	self should: [obj1 v1: 0] raise: Break.
-	self should: [ FieldWatchpointMockSubclass new ] raise: Break.
+	self should: [ VariableBreakpointMockSubclass new ] raise: Break.
 	self shouldnt: [ obj2 instVarReads] raise: Break.
 	self should: [ obj2 instVarWrites] raise: Break
 	
@@ -328,16 +328,16 @@ FieldWatchpointTest >> testWatchVariableWritesIn [
 ]
 
 { #category : #'tests - object-centric' }
-FieldWatchpointTest >> testWatchVariableWritesInObject [ 	
+VariableBreakpointTest >> testWatchVariableWritesInObject [ 	
 
-	wp := FieldWatchpoint watchVariableWrites: #v1 inObject: obj1.	
+	wp := VariableBreakpoint watchVariableWrites: #v1 inObject: obj1.	
 	self assert: wp targetInstance equals: obj1.
 	self assert: wp accessStrategy equals: #write.
 		
 	self should: [obj1 v1: 0] raise: Break.
 	self shouldnt: [obj1 v1] raise: Break.		
 			
-	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
+	self shouldnt: [VariableBreakpointMockClass new] raise: Break.
 	self shouldnt: [obj3 v1] raise: Break.
 	self shouldnt: [obj3 v1: 0] raise: Break
 	
@@ -347,20 +347,20 @@ FieldWatchpointTest >> testWatchVariableWritesInObject [
 ]
 
 { #category : #'tests - class wide watchpoints' }
-FieldWatchpointTest >> testWatchVariablesIn [	
+VariableBreakpointTest >> testWatchVariablesIn [	
 
-	wp := FieldWatchpoint watchVariablesIn: FieldWatchpointMockSubclass.
+	wp := VariableBreakpoint watchVariablesIn: VariableBreakpointMockSubclass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
-	self assert: wp targetClass identicalTo: FieldWatchpointMockSubclass.
+	self assert: wp targetClass identicalTo: VariableBreakpointMockSubclass.
 	self assert: wp targetInstance equals: nil.
 
 	self assertCollection: wp link nodes asIdentitySet equals: self allNodes asIdentitySet.
 	
-	self should: [FieldWatchpointMockClass new] raise: Break.
+	self should: [VariableBreakpointMockClass new] raise: Break.
 	self should: [obj1 v1] raise: Break.	
 	self should: [obj1 v1: 0] raise: Break.
-	self should: [FieldWatchpointMockSubclass new ] raise: Break.
+	self should: [VariableBreakpointMockSubclass new ] raise: Break.
 	self should: [obj2 instVarReads] raise: Break.
 	self should: [obj2 instVarWrites] raise: Break.
 	self should: [obj2 v2] raise: Break.	
@@ -371,9 +371,9 @@ FieldWatchpointTest >> testWatchVariablesIn [
 ]
 
 { #category : #'tests - object-centric' }
-FieldWatchpointTest >> testWatchVariablesInObject [	
+VariableBreakpointTest >> testWatchVariablesInObject [	
 
-	wp := FieldWatchpoint watchVariablesInObject: obj2.	
+	wp := VariableBreakpoint watchVariablesInObject: obj2.	
 	self assert: wp targetInstance equals: obj2.	
 	
 	self should: [obj2 instVarReads] raise: Break.
@@ -392,27 +392,27 @@ FieldWatchpointTest >> testWatchVariablesInObject [
 	
 	self shouldnt: [obj1 v1] raise: Break.	
 	self shouldnt: [obj1 v1: 0] raise: Break.
-	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
-	self shouldnt: [FieldWatchpointMockSubclass new ] raise: Break.
+	self shouldnt: [VariableBreakpointMockClass new] raise: Break.
+	self shouldnt: [VariableBreakpointMockSubclass new ] raise: Break.
 	
 ]
 
 { #category : #'tests - class wide watchpoints' }
-FieldWatchpointTest >> testWatchVariablesReadsIn [	
+VariableBreakpointTest >> testWatchVariablesReadsIn [	
 
-	wp := FieldWatchpoint watchVariablesReadsIn: FieldWatchpointMockSubclass.
+	wp := VariableBreakpoint watchVariablesReadsIn: VariableBreakpointMockSubclass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
-	self assert: wp targetClass identicalTo: FieldWatchpointMockSubclass.
+	self assert: wp targetClass identicalTo: VariableBreakpointMockSubclass.
 	self assert: wp targetInstance equals: nil.
 	
 	self assertCollection: wp link nodes asIdentitySet 
 			equals: (self allNodes select:[:n| n isVariable]) asIdentitySet.
 	
-	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
+	self shouldnt: [VariableBreakpointMockClass new] raise: Break.
 	self should: [obj1 v1] raise: Break.	
 	self shouldnt: [obj1 v1: 0] raise: Break.
-	self shouldnt: [FieldWatchpointMockSubclass new ] raise: Break.
+	self shouldnt: [VariableBreakpointMockSubclass new ] raise: Break.
 	self should: [obj2 instVarReads] raise: Break.
 	self shouldnt: [obj2 instVarWrites] raise: Break.
 	self should: [obj2 v2] raise: Break.	
@@ -423,9 +423,9 @@ FieldWatchpointTest >> testWatchVariablesReadsIn [
 ]
 
 { #category : #'tests - object-centric' }
-FieldWatchpointTest >> testWatchVariablesReadsInObject [	
+VariableBreakpointTest >> testWatchVariablesReadsInObject [	
 
-	wp := FieldWatchpoint watchVariablesReadsInObject: obj2.
+	wp := VariableBreakpoint watchVariablesReadsInObject: obj2.
 	self assert: wp targetInstance equals: obj2.
 	self assert: wp accessStrategy equals: #read.	 
 	
@@ -446,27 +446,27 @@ FieldWatchpointTest >> testWatchVariablesReadsInObject [
 	
 	self shouldnt: [obj1 v1] raise: Break.	
 	self shouldnt: [obj1 v1: 0] raise: Break.
-	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
-	self shouldnt: [FieldWatchpointMockSubclass new ] raise: Break.
+	self shouldnt: [VariableBreakpointMockClass new] raise: Break.
+	self shouldnt: [VariableBreakpointMockSubclass new ] raise: Break.
 	
 ]
 
 { #category : #'tests - class wide watchpoints' }
-FieldWatchpointTest >> testWatchVariablesWritesIn [	
+VariableBreakpointTest >> testWatchVariablesWritesIn [	
 
-	wp := FieldWatchpoint watchVariablesWritesIn: FieldWatchpointMockSubclass.
+	wp := VariableBreakpoint watchVariablesWritesIn: VariableBreakpointMockSubclass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
-	self assert: wp targetClass identicalTo: FieldWatchpointMockSubclass.
+	self assert: wp targetClass identicalTo: VariableBreakpointMockSubclass.
 	self assert: wp targetInstance equals: nil.
 	
 	self assertCollection: wp link nodes asIdentitySet 
 			equals: (self allNodes select:[:n| n isAssignment]) asIdentitySet.
 	
-	self should: [FieldWatchpointMockClass new] raise: Break.
+	self should: [VariableBreakpointMockClass new] raise: Break.
 	self shouldnt: [obj1 v1] raise: Break.	
 	self should: [obj1 v1: 0] raise: Break.
-	self should: [FieldWatchpointMockSubclass new ] raise: Break.
+	self should: [VariableBreakpointMockSubclass new ] raise: Break.
 	self shouldnt: [obj2 instVarReads] raise: Break.
 	self should: [obj2 instVarWrites] raise: Break.
 	self shouldnt: [obj2 v2] raise: Break.	
@@ -477,9 +477,9 @@ FieldWatchpointTest >> testWatchVariablesWritesIn [
 ]
 
 { #category : #'tests - object-centric' }
-FieldWatchpointTest >> testWatchVariablesWritesInObject [	
+VariableBreakpointTest >> testWatchVariablesWritesInObject [	
 
-	wp := FieldWatchpoint watchVariablesWritesInObject: obj2.
+	wp := VariableBreakpoint watchVariablesWritesInObject: obj2.
 	self assert: wp targetInstance equals: obj2.
 	self assert: wp accessStrategy equals: #write.	
 	
@@ -499,7 +499,7 @@ FieldWatchpointTest >> testWatchVariablesWritesInObject [
 	
 	self shouldnt: [obj1 v1] raise: Break.	
 	self shouldnt: [obj1 v1: 0] raise: Break.
-	self shouldnt: [FieldWatchpointMockClass new] raise: Break.
-	self shouldnt: [FieldWatchpointMockSubclass new ] raise: Break.
+	self shouldnt: [VariableBreakpointMockClass new] raise: Break.
+	self shouldnt: [VariableBreakpointMockSubclass new ] raise: Break.
 	
 ]
