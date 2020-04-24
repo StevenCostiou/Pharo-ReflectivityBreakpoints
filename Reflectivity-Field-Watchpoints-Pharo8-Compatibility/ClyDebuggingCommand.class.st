@@ -39,5 +39,5 @@ ClyDebuggingCommand class >> sourceCodeMenuActivation [
 	<classAnnotation>
 	
 	^SycDebuggingMenuActivation 
-		byItemOf: ClyDebuggingMenuGroup order: self contextMenuOrder for: ClyMethodSourceCodeContext
+		byItemOf: ClyDebuggingMenuGroup order: self contextMenuOrder for: ClyMethodSourceCodeContext 
 ]
