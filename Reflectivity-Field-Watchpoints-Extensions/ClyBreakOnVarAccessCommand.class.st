@@ -1,0 +1,18 @@
+"
+I break on all accesses to selected target variable in the source code
+"
+Class {
+	#name : #ClyBreakOnVarAccessCommand,
+	#superclass : #ClyVariableBreakpointCommand,
+	#category : #'Reflectivity-Field-Watchpoints-Extensions'
+}
+
+{ #category : #accessing }
+ClyBreakOnVarAccessCommand >> defaultMenuItemName [
+	^'Break on accesses to ', sourceNode name
+]
+
+{ #category : #execution }
+ClyBreakOnVarAccessCommand >> installVariableBreakpointOn: aVariableName in: methodOrClass [
+	VariableBreakpoint watchVariable: sourceNode name in: methodOrClass
+]
