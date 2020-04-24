@@ -35,6 +35,22 @@ VariableBreakpointTest >> allNodesForV2 [
 ]
 
 { #category : #helpers }
+VariableBreakpointTest >> allTempNodes [
+	^ OrderedCollection new
+		addAll: self tempReadNodes;
+		addAll: self tempWriteNodes;
+		yourself
+]
+
+{ #category : #helpers }
+VariableBreakpointTest >> argNodes [
+	|nodes |
+	nodes := OrderedCollection new.
+	nodes add: (VariableBreakpointMockClass>>#methodWithTempsAndArg:) ast statements first value.
+	^nodes
+]
+
+{ #category : #helpers }
 VariableBreakpointTest >> nodesForV1InFieldWatchpointMockClass [
 	|nodes |
 	nodes := OrderedCollection new.
@@ -80,6 +96,22 @@ VariableBreakpointTest >> tearDown [
 		ifNotNil: [ wp isInstalled
 				ifTrue: [ wp remove ] ].
 	super tearDown
+]
+
+{ #category : #helpers }
+VariableBreakpointTest >> tempReadNodes [
+	|nodes |
+	nodes := OrderedCollection new.
+	nodes add: (VariableBreakpointMockClass>>#methodWithTempsAndArg:) ast statements last value.
+	^nodes
+]
+
+{ #category : #helpers }
+VariableBreakpointTest >> tempWriteNodes [
+	|nodes |
+	nodes := OrderedCollection new.
+	nodes add: (VariableBreakpointMockClass>>#methodWithTempsAndArg:) ast statements first.
+	^nodes
 ]
 
 { #category : #'tests - installation' }
@@ -140,6 +172,66 @@ VariableBreakpointTest >> testAllSlotNamesFor [
 	self
 		assertCollection: (VariableBreakpoint allSlotNamesFor: VariableBreakpointMockSubclass)
 		equals: (OrderedCollection with: #v1 with: #v2)
+]
+
+{ #category : #'tests - temp var breakpoints' }
+VariableBreakpointTest >> testBreakpointOnAllTempAccesses [
+	|method|
+	method := (VariableBreakpointMockClass>> #methodWithTempsAndArg:).
+	wp := VariableBreakpoint watchVariable: #temp in: method.
+	
+	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #temp).
+	self assert: wp targetClassOrMethod identicalTo: method.
+	self assert: wp targetInstance equals: nil.
+	
+	self assertCollection: wp link nodes asIdentitySet equals: self allTempNodes asIdentitySet.	
+	self should: [obj1 methodWithTempsAndArg: 42] raise: Break	
+	
+]
+
+{ #category : #'tests - temp var breakpoints' }
+VariableBreakpointTest >> testBreakpointOnArgument [
+	|method|
+	method := (VariableBreakpointMockClass>> #methodWithTempsAndArg:).
+	wp := VariableBreakpoint watchVariable: #arg in: method.
+	
+	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #arg).
+	self assert: wp targetClassOrMethod identicalTo: method.
+	self assert: wp targetInstance equals: nil.
+	
+	self assertCollection: wp link nodes asIdentitySet equals: self argNodes asIdentitySet.	
+	self should: [obj1 methodWithTempsAndArg: 42] raise: Break	
+	
+]
+
+{ #category : #'tests - temp var breakpoints' }
+VariableBreakpointTest >> testBreakpointOnTempReads [
+	|method|
+	method := (VariableBreakpointMockClass>> #methodWithTempsAndArg:).
+	wp := VariableBreakpoint watchVariableReads: #temp in: method.
+	
+	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #temp).
+	self assert: wp targetClassOrMethod identicalTo: method.
+	self assert: wp targetInstance equals: nil.
+	
+	self assertCollection: wp link nodes asIdentitySet equals: self tempReadNodes asIdentitySet.	
+	self should: [obj1 methodWithTempsAndArg: 42] raise: Break	
+	
+]
+
+{ #category : #'tests - temp var breakpoints' }
+VariableBreakpointTest >> testBreakpointOnTempWrites [
+	|method|
+	method := (VariableBreakpointMockClass>> #methodWithTempsAndArg:).
+	wp := VariableBreakpoint watchVariableWrites: #temp in: method.
+	
+	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #temp).
+	self assert: wp targetClassOrMethod identicalTo: method.
+	self assert: wp targetInstance equals: nil.
+	
+	self assertCollection: wp link nodes asIdentitySet equals: self tempWriteNodes asIdentitySet.	
+	self should: [obj1 methodWithTempsAndArg: 42] raise: Break	
+	
 ]
 
 { #category : #'tests - initialization' }

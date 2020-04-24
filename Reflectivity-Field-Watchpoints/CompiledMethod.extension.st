@@ -5,7 +5,7 @@ CompiledMethod >> link: aMetaLink toVariableNamed: vName option: accessStrategy 
 	^ self methodClass
 		link: aMetaLink
 		toTemporaryNamed: vName
-		inMethod: self
+		inMethod: self selector
 		option: accessStrategy
 ]
 
