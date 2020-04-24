@@ -178,7 +178,11 @@ VariableBreakpointTest >> testNewBreakpointForVariableInClass [
 	wp := VariableBreakpoint newBreakpointForVariable: #var inClass: #class.
 	self assert: wp class identicalTo: VariableBreakpoint.
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #var).
-	self assert: wp targetClass equals: #class
+	self assert: wp targetClassOrMethod equals: #class
+]
+
+{ #category : #'tests - initialization' }
+VariableBreakpointTest >> testNewBreakpointForVariableInClassForMethod [
 ]
 
 { #category : #'tests - initialization' }
@@ -186,7 +190,7 @@ VariableBreakpointTest >> testNewWatchPointInClass [
 	wp := VariableBreakpoint newWatchPointInClass: VariableBreakpointMockSubclass.
 	self assert: wp class identicalTo: VariableBreakpoint.
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
-	self assert: wp targetClass equals: VariableBreakpointMockSubclass
+	self assert: wp targetClassOrMethod equals: VariableBreakpointMockSubclass
 ]
 
 { #category : #'tests - installation' }
@@ -234,7 +238,7 @@ VariableBreakpointTest >> testWatchVariableIn [
 	wp := VariableBreakpoint watchVariable: #v1 in: VariableBreakpointMockClass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1).
-	self assert: wp targetClass identicalTo: VariableBreakpointMockClass.
+	self assert: wp targetClassOrMethod identicalTo: VariableBreakpointMockClass.
 	self assert: wp targetInstance equals: nil.
 	
 	self assertCollection: wp link nodes asIdentitySet equals: self allNodesForV1 asIdentitySet.
@@ -270,7 +274,7 @@ VariableBreakpointTest >> testWatchVariableReadsIn [
 	wp := VariableBreakpoint watchVariableReads: #v1 in: VariableBreakpointMockClass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1).
-	self assert: wp targetClass identicalTo: VariableBreakpointMockClass.
+	self assert: wp targetClassOrMethod identicalTo: VariableBreakpointMockClass.
 	self assert: wp targetInstance equals: nil.
 
 	self assertCollection: wp link nodes asIdentitySet 
@@ -309,7 +313,7 @@ VariableBreakpointTest >> testWatchVariableWritesIn [
 	wp := VariableBreakpoint watchVariableWrites: #v1 in: VariableBreakpointMockClass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1).
-	self assert: wp targetClass identicalTo: VariableBreakpointMockClass.
+	self assert: wp targetClassOrMethod identicalTo: VariableBreakpointMockClass.
 	self assert: wp targetInstance equals: nil.
 
 	self assertCollection: wp link nodes asIdentitySet 
@@ -352,7 +356,7 @@ VariableBreakpointTest >> testWatchVariablesIn [
 	wp := VariableBreakpoint watchVariablesIn: VariableBreakpointMockSubclass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
-	self assert: wp targetClass identicalTo: VariableBreakpointMockSubclass.
+	self assert: wp targetClassOrMethod identicalTo: VariableBreakpointMockSubclass.
 	self assert: wp targetInstance equals: nil.
 
 	self assertCollection: wp link nodes asIdentitySet equals: self allNodes asIdentitySet.
@@ -403,7 +407,7 @@ VariableBreakpointTest >> testWatchVariablesReadsIn [
 	wp := VariableBreakpoint watchVariablesReadsIn: VariableBreakpointMockSubclass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
-	self assert: wp targetClass identicalTo: VariableBreakpointMockSubclass.
+	self assert: wp targetClassOrMethod identicalTo: VariableBreakpointMockSubclass.
 	self assert: wp targetInstance equals: nil.
 	
 	self assertCollection: wp link nodes asIdentitySet 
@@ -457,7 +461,7 @@ VariableBreakpointTest >> testWatchVariablesWritesIn [
 	wp := VariableBreakpoint watchVariablesWritesIn: VariableBreakpointMockSubclass.
 	
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
-	self assert: wp targetClass identicalTo: VariableBreakpointMockSubclass.
+	self assert: wp targetClassOrMethod identicalTo: VariableBreakpointMockSubclass.
 	self assert: wp targetInstance equals: nil.
 	
 	self assertCollection: wp link nodes asIdentitySet 

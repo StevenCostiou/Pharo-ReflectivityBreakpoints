@@ -5,11 +5,11 @@ Class {
 	#name : #VariableBreakpoint,
 	#superclass : #Breakpoint,
 	#instVars : [
-		'targetClass',
 		'targetInstance',
 		'targetVariableNames',
 		'accessStrategy',
-		'isInstalled'
+		'isInstalled',
+		'targetClassOrMethod'
 	],
 	#category : #'Reflectivity-Field-Watchpoints'
 }
@@ -19,23 +19,30 @@ VariableBreakpoint class >> allSlotNamesFor: aClass [
 	^ aClass allSlots collect: [ :s | s name ]
 ]
 
-{ #category : #private }
-VariableBreakpoint class >> newBreakpointForVariable: aVariableName inClass: aClass [
+{ #category : #'instance creation' }
+VariableBreakpoint class >> newBreakpointForVariable: aVariableName forMethod: aCompiledMethod [
 	^ self new
-		targetClass: aClass;
+		targetClassOrMethod: aCompiledMethod;
 		targetVariableNames: (OrderedCollection with: aVariableName)
 ]
 
-{ #category : #private }
+{ #category : #'instance creation' }
+VariableBreakpoint class >> newBreakpointForVariable: aVariableName inClass: aClass [
+	^ self new
+		targetClassOrMethod: aClass;
+		targetVariableNames: (OrderedCollection with: aVariableName)
+]
+
+{ #category : #'instance creation' }
 VariableBreakpoint class >> newWatchPointInClass: aClass [
 	^ self new
-		targetClass: aClass;
+		targetClassOrMethod: aClass;
 		targetVariableNames: (self allSlotNamesFor: aClass)
 ]
 
 { #category : #API }
-VariableBreakpoint class >> watchVariable: aVariableName in: aClass [
-	^ (self newBreakpointForVariable: aVariableName inClass: aClass)
+VariableBreakpoint class >> watchVariable: aVariableName in: aClassOrCompiledMethod [
+	^ (aClassOrCompiledMethod newBreakpointForVariable: aVariableName)
 		install
 ]
 
@@ -47,8 +54,8 @@ VariableBreakpoint class >> watchVariable: aVariableName inObject: anObject [
 ]
 
 { #category : #API }
-VariableBreakpoint class >> watchVariableReads: aVariableName in: aClass [
-	^ (self newBreakpointForVariable: aVariableName inClass: aClass)
+VariableBreakpoint class >> watchVariableReads: aVariableName in: aClassOrCompiledMethod [
+	^ (aClassOrCompiledMethod newBreakpointForVariable: aVariableName)
 		accessStrategy: #read;
 		install
 ]
@@ -62,8 +69,8 @@ VariableBreakpoint class >> watchVariableReads: aVariableName inObject: anObject
 ]
 
 { #category : #API }
-VariableBreakpoint class >> watchVariableWrites: aVariableName in: aClass [
-	^ (self newBreakpointForVariable: aVariableName inClass: aClass)
+VariableBreakpoint class >> watchVariableWrites: aVariableName in: aClassOrCompiledMethod [
+	^ (aClassOrCompiledMethod newBreakpointForVariable: aVariableName)
 		accessStrategy: #write;
 		install
 ]
@@ -142,9 +149,9 @@ VariableBreakpoint >> install [
 		ifTrue: [ ^ self ].
 	targetVariableNames
 		do: [ :vName | 
-			targetClass
+			targetClassOrMethod
 				link: self link
-				toSlotNamed: vName
+				toVariableNamed: vName
 				option: self accessStrategy ].
 	isInstalled := true.
 	self class addBreakpoint: self
@@ -174,13 +181,13 @@ VariableBreakpoint >> scopeTo: anInstance [
 ]
 
 { #category : #accessing }
-VariableBreakpoint >> targetClass [
-	^ targetClass
+VariableBreakpoint >> targetClassOrMethod [
+	^ targetClassOrMethod
 ]
 
 { #category : #accessing }
-VariableBreakpoint >> targetClass: anObject [
-	targetClass := anObject
+VariableBreakpoint >> targetClassOrMethod: anObject [
+	targetClassOrMethod := anObject
 ]
 
 { #category : #accessing }

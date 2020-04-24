@@ -15,6 +15,13 @@ VariableBreakpointMockClass >> initialize [
 	v1 := 0
 ]
 
+{ #category : #'as yet unclassified' }
+VariableBreakpointMockClass >> methodWithTempsAndArg: arg [
+	| temp |
+	temp := arg.
+	^ temp
+]
+
 { #category : #accessing }
 VariableBreakpointMockClass >> v1 [
 	^ v1
