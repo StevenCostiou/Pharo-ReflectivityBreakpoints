@@ -15,11 +15,11 @@ VariableBreakpointMockClass >> initialize [
 	v1 := 0
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 VariableBreakpointMockClass >> methodWithTempsAndArg: arg [
 	| temp |
 	temp := arg.
-	^ temp
+	^ temp 
 ]
 
 { #category : #accessing }
