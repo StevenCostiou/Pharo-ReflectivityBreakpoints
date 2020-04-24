@@ -11,9 +11,9 @@ CompiledMethod >> link: aMetaLink toVariableNamed: vName option: accessStrategy 
 
 { #category : #'*Reflectivity-Field-Watchpoints' }
 CompiledMethod >> newBreakpointForVariable: aVariableName [
-	^ (self tempNames includes: aVariableName)
-		ifTrue: [ VariableBreakpoint
-				newBreakpointForVariable: aVariableName
-				forMethod: self ]
-		ifFalse: [ self flag: 'inst var breakpoint in this method' ]
+	(self tempNames includes: aVariableName)
+		ifFalse: [ ^ self ].
+	VariableBreakpoint
+		newBreakpointForVariable: aVariableName
+		forMethod: self
 ]
