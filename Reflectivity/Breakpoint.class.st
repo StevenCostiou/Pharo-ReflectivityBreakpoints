@@ -111,8 +111,7 @@ Breakpoint class >> notifyBreakpointAdded: aBreakpoint [
 	notification := BreakpointAddedNotification
 		on: aBreakpoint
 		nodes: aBreakpoint link nodes.
-	self observers
-		do: [ :observer | observer ifNotNil: [ observer update: notification ] ]
+	self notifyObservers: notification
 ]
 
 { #category : #observers }
@@ -121,8 +120,7 @@ Breakpoint class >> notifyBreakpointHit: aBreakpoint inContext: aContext [
 	notification := BreakpointHitNotification
 		on: aBreakpoint
 		nodes: aBreakpoint link nodes.
-	self observers
-		do: [ :observer | observer ifNotNil: [ observer update: notification ] ]
+	self notifyObservers: notification
 ]
 
 { #category : #observers }
@@ -131,8 +129,13 @@ Breakpoint class >> notifyBreakpointRemoved: aBreakpoint fromNodes: nodes [
 	notification := BreakpointRemovedNotification
 		on: aBreakpoint
 		nodes: nodes.
+	self notifyObservers: notification
+]
+
+{ #category : #observers }
+Breakpoint class >> notifyObservers: aNotification [
 	self observers
-		do: [ :observer | observer ifNotNil: [ observer update: notification ] ]
+		do: [ :observer | observer ifNotNil: [ observer update: aNotification ] ]
 ]
 
 { #category : #observers }
