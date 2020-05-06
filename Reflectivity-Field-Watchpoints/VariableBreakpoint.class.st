@@ -40,6 +40,18 @@ VariableBreakpoint class >> newWatchPointInClass: aClass [
 		targetVariableNames: (self allSlotNamesFor: aClass)
 ]
 
+{ #category : #observers }
+VariableBreakpoint class >> notifyBreakpointHit: aBreakpoint inContext: aContext [
+	| node notification |	
+	node := aContext sourceNodeExecuted parent.
+	notification := BreakpointHitNotification
+		on: aBreakpoint
+		nodes: {node}.
+	notification valueOrNil: (node variableValueInContext: aContext).
+	notification inspect.
+	self notifyObservers: notification
+]
+
 { #category : #API }
 VariableBreakpoint class >> watchVariable: aVariableName in: aClassOrCompiledMethod [
 	^ (aClassOrCompiledMethod newBreakpointForVariable: aVariableName)
@@ -165,6 +177,14 @@ VariableBreakpoint >> isInstalled [
 { #category : #testing }
 VariableBreakpoint >> isWatchpoint [
 	^true
+]
+
+{ #category : #install }
+VariableBreakpoint >> link [
+	self flag: 'This is not clear if it should break after or before a variable has been accessed/written'.
+	^ super link
+		control: #after;
+		yourself
 ]
 
 { #category : #install }
