@@ -48,7 +48,6 @@ VariableBreakpoint class >> notifyBreakpointHit: aBreakpoint inContext: aContext
 		on: aBreakpoint
 		nodes: {node}.
 	notification valueOrNil: (node variableValueInContext: aContext).
-	notification inspect.
 	self notifyObservers: notification
 ]
 

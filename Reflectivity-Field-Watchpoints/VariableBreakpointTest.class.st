@@ -6,7 +6,8 @@ Class {
 		'obj2',
 		'wp',
 		'obj3',
-		'obj4'
+		'obj4',
+		'observer'
 	],
 	#category : #'Reflectivity-Field-Watchpoints'
 }
@@ -87,7 +88,9 @@ VariableBreakpointTest >> setUp [
 	obj1 := VariableBreakpointMockClass new.
 	obj2 := VariableBreakpointMockSubclass new.
 	obj3 := VariableBreakpointMockClass new.
-	obj4 := VariableBreakpointMockSubclass new
+	obj4 := VariableBreakpointMockSubclass new.
+	observer := DummyBreakpointObserver new.
+	Breakpoint registerObserver: observer
 ]
 
 { #category : #running }
@@ -95,6 +98,7 @@ VariableBreakpointTest >> tearDown [
 	wp
 		ifNotNil: [ wp isInstalled
 				ifTrue: [ wp remove ] ].
+	Breakpoint unregisterObserver: observer.
 	super tearDown
 ]
 
@@ -283,6 +287,71 @@ VariableBreakpointTest >> testNewWatchPointInClass [
 	self assert: wp class identicalTo: VariableBreakpoint.
 	self assertCollection: wp targetVariableNames equals: (OrderedCollection with: #v1 with: #v2).
 	self assert: wp targetClassOrMethod equals: VariableBreakpointMockSubclass
+]
+
+{ #category : #'tests - notifications' }
+VariableBreakpointTest >> testNotifyArgumentBreakpointHit [
+	|method notification|
+	method := (VariableBreakpointMockClass>> #methodWithTempsAndArg:).
+	wp := VariableBreakpoint watchVariable: #arg in: method.
+	self should: [obj1 methodWithTempsAndArg: 42] raise: Break.
+	notification := observer tag.
+	self assert: notification breakpoint identicalTo: wp.
+	self assert: notification nodes size equals: 1.
+	self assert: notification nodes first equals: method ast statements first value.
+	self assert: notification valueOrNil equals: 42
+]
+
+{ #category : #'tests - notifications' }
+VariableBreakpointTest >> testNotifyInstVarBreakpointHit [
+	|method notification|
+	obj1 v1: 0.
+	method := (VariableBreakpointMockClass>> #v1).
+	wp := VariableBreakpoint watchVariableReads: #v1 in: VariableBreakpointMockClass.
+	self should: [obj1 v1] raise: Break.
+	
+	notification := observer tag.
+	self assert: notification breakpoint identicalTo: wp.
+	self assert: notification nodes size equals: 1.
+	self assert: notification nodes first equals: method ast statements first value.
+	self assert: notification valueOrNil equals: 0.
+	
+	wp remove.
+	observer update: nil.
+	method := (VariableBreakpointMockClass>> #v1:).
+	wp := VariableBreakpoint watchVariableWrites: #v1 in: VariableBreakpointMockClass.	
+	self should: [obj1 v1: 42] raise: Break.
+	
+	notification := observer tag.
+	self assert: notification breakpoint identicalTo: wp.
+	self assert: notification nodes size equals: 1.
+	self assert: notification nodes first equals: method ast statements first.
+	self assert: notification valueOrNil equals: 42.
+]
+
+{ #category : #'tests - notifications' }
+VariableBreakpointTest >> testNotifyTempBreakpointHit [
+	|method notification|
+	method := (VariableBreakpointMockClass>> #methodWithTempsAndArg:).
+	wp := VariableBreakpoint watchVariableReads: #temp in: method.
+	self should: [obj1 methodWithTempsAndArg: 42] raise: Break.
+	
+	notification := observer tag.
+	self assert: notification breakpoint identicalTo: wp.
+	self assert: notification nodes size equals: 1.
+	self assert: notification nodes first equals: method ast statements last value.
+	self assert: notification valueOrNil equals: 42.
+	
+	wp remove.
+	observer update: nil.
+	wp := VariableBreakpoint watchVariableWrites: #temp in: method.
+	self should: [obj1 methodWithTempsAndArg: 42] raise: Break.
+	
+	notification := observer tag.
+	self assert: notification breakpoint identicalTo: wp.
+	self assert: notification nodes size equals: 1.
+	self assert: notification nodes first equals: method ast statements first.
+	self assert: notification valueOrNil equals: 42
 ]
 
 { #category : #'tests - installation' }
