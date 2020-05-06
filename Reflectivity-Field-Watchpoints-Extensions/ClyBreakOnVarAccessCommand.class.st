@@ -9,6 +9,7 @@ Class {
 
 { #category : #accessing }
 ClyBreakOnVarAccessCommand >> defaultMenuItemName [
+	sourceNode isVariable ifFalse:[^'(unvalid node)'].
 	^'Break on accesses to ', sourceNode name
 ]
 

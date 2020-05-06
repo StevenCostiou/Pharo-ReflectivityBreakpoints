@@ -9,6 +9,7 @@ Class {
 
 { #category : #accessing }
 ClyBreakOnVarWritesCommand >> defaultMenuItemName [
+	sourceNode isVariable ifFalse:[^'(unvalid node)'].
 	^'Break on writes to ', sourceNode name
 ]
 
