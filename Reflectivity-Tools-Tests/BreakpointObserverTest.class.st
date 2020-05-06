@@ -60,6 +60,17 @@ BreakpointObserverTest >> testNotifyBreakpointAdded [
 ]
 
 { #category : #tests }
+BreakpointObserverTest >> testNotifyBreakpointHit [
+	Breakpoint registerObserver: observer.
+	breakpoint install.
+	self should: [cls new dummy] raise: Break.	
+	self assert: observer tag class equals: BreakpointHitNotification.
+	self assert: observer tag breakpoint identicalTo: breakpoint.
+	self assert: observer tag valueOrNil isNil
+	
+]
+
+{ #category : #tests }
 BreakpointObserverTest >> testNotifyBreakpointRemoved [	
 	breakpoint install.
 	Breakpoint registerObserver: observer.

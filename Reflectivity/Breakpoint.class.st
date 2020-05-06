@@ -116,6 +116,16 @@ Breakpoint class >> notifyBreakpointAdded: aBreakpoint [
 ]
 
 { #category : #observers }
+Breakpoint class >> notifyBreakpointHit: aBreakpoint inContext: aContext [
+	| notification |
+	notification := BreakpointHitNotification
+		on: aBreakpoint
+		nodes: aBreakpoint link nodes.
+	self observers
+		do: [ :observer | observer ifNotNil: [ observer update: notification ] ]
+]
+
+{ #category : #observers }
 Breakpoint class >> notifyBreakpointRemoved: aBreakpoint fromNodes: nodes [
 	| notification |
 	notification := BreakpointRemovedNotification
@@ -189,11 +199,13 @@ Breakpoint >> always [
 
 { #category : #links }
 Breakpoint >> breakLink [
- 	"for now it should just halt in base level"
+	"for now it should just halt in base level"
+
 	^ MetaLink new
 		metaObject: Break;
-		selector: #break;
-		options: options
+		selector: #break:inContext:;
+		options: options;
+		arguments: {(RFLiteralVariableNode value: self). #context}
 ]
 
 { #category : #links }

@@ -20,11 +20,6 @@ BreakpointNotification class >> on: aBreakpoint nodes: nodes [
 		yourself
 ]
 
-{ #category : #visiting }
-BreakpointNotification >> acceptVisitor: aVisitor [
-	self subclassResponsibility 
-]
-
 { #category : #accessing }
 BreakpointNotification >> breakpoint [
 	^ breakpoint

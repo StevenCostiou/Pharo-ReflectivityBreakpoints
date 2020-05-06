@@ -14,3 +14,10 @@ Break class >> break [
 	<debuggerCompleteToSender>
 	self signal
 ]
+
+{ #category : #break }
+Break class >> break: aBreakpoint inContext: aContext [
+	<debuggerCompleteToSender>
+	Breakpoint notifyBreakpointHit: aBreakpoint inContext: aContext.	
+	self break
+]
