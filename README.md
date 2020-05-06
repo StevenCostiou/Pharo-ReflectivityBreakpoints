@@ -4,6 +4,15 @@ Improving Reflectivity breakpoints with:
 - a field watchpoint implementation
 - an object-centric field watchpoint implementation
 
+To load, execute the following in a playground. Click `load` when it asks you what to do about Reflectivity.
+
+```Smalltalk
+Metacello new
+    baseline: 'PharoReflectivityBreakpoints';
+    repository: 'github://StevenCostiou/Pharo-ReflectivityBreakpoints';
+    load.
+ ```
+
 ## Breakpoint Observer
 
 Observers can register to the Breakpoint class using the `registerObserver:` and `unregisterObserver:` methods.
